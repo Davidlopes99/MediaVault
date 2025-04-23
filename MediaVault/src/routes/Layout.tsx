@@ -1,28 +1,39 @@
 import { Outlet, Link } from 'react-router-dom';
+import Footer from '../components/Footer';
+import BackToTopButton from '../components/BackToTopButton';  // Importando o componente
 
 export default function Layout() {
   return (
-    <div>
+    <div className="d-flex flex-column min-vh-100">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
         <Link className="navbar-brand" to="/">MediaVault</Link>
-        <div className="collapse navbar-collapse">
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/">Home</Link>
+              <Link className="nav-link" to="/">Início</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/produtos">Produtos</Link>
+              <Link className="nav-link" to="/filmes">Filmes</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/contatos">Contatos</Link>
+              <Link className="nav-link" to="/series">Séries</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/sobre">Sobre</Link>
             </li>
           </ul>
         </div>
       </nav>
 
-      <main className="container mt-4">
+      <main className="container flex-grow-1 mt-4">
         <Outlet />
       </main>
+
+      <Footer />
+      <BackToTopButton /> {/* Botão "Voltar ao topo" adicionado aqui */}
     </div>
   );
 }

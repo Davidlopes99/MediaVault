@@ -1,19 +1,21 @@
-import Layout from "./Layout";
 import { createBrowserRouter } from 'react-router-dom';
-import HomePage from "../pages/HomePage";
-import ProdutosPage from "../pages/ProdutosPage";
-import ContatosPage from "../pages/ContatosPage";
-
+import Layout from './Layout';
+import HomePage from '../pages/HomePage';
+import FilmesPage from '../pages/FilmesPage';
+import SeriesPage from '../pages/SeriesPage';
+import SobrePage from '../pages/SobrePage';
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Layout />,
-        children: [
-            {path: "", element: <HomePage />},
-            {path: "produtos", element: <ProdutosPage />},
-            {path: "contatos", element: <ContatosPage />},           
-        ]
-    }
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { path: '', element: <HomePage /> },
+      { path: 'filmes', element: <FilmesPage /> },
+      { path: 'series', element: <SeriesPage /> },
+      { path: 'sobre', element: <SobrePage /> }
+    ]
+  }
 ]);
+
 export default router;
