@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
-// Definindo o tipo das props
 type MovieCardProps = {
   title: string;
   imageUrl: string;

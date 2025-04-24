@@ -1,6 +1,6 @@
 import { Outlet, Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-import BackToTopButton from '../components/BackToTopButton';  // Importando o componente
+
 
 export default function Layout() {
   return (
@@ -33,7 +33,6 @@ export default function Layout() {
       </main>
 
       <Footer />
-      <BackToTopButton /> {/* Botão "Voltar ao topo" adicionado aqui */}
     </div>
   );
 }

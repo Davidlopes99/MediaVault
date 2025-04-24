@@ -1,34 +1,32 @@
-// src/components/SeriesCard.tsx
-import { Card, Button, Badge } from 'react-bootstrap';
+import React from 'react';
+import { Card, Button } from 'react-bootstrap';
 
-export type SeriesCardProps = {
+type SeriesCardProps = {
   title: string;
   imageUrl: string;
   description: string;
   seasons: number;
+  rating: number;
   onClick: () => void;
 };
 
-export default function SeriesCard({
-  title,
-  imageUrl,
-  description,
-  seasons,
-  onClick
-}: SeriesCardProps) {
+const SeriesCard: React.FC<SeriesCardProps> = ({ title, imageUrl, description, seasons, rating, onClick }) => {
   return (
     <Card className="h-100">
       <Card.Img variant="top" src={imageUrl} alt={title} />
-      <Card.Body className="d-flex flex-column">
+      <Card.Body>
         <Card.Title>{title}</Card.Title>
-        <Card.Text className="flex-grow-1">{description}</Card.Text>
-        <div className="d-flex justify-content-between align-items-center mt-3">
-          <Badge bg="info">{seasons} {seasons > 1 ? 'Temporadas' : 'Temporada'}</Badge>
-          <Button variant="primary" size="sm" onClick={onClick}>
-            Detalhes
-          </Button>
+        <Card.Text>{description}</Card.Text>
+        <div className="mb-2">
+          <strong>Temporadas:</strong> {seasons}
+        </div>
+        <div className="d-flex justify-content-between align-items-center">
+          <Button variant="primary" onClick={onClick}>Detalhes</Button>
+          <div className="badge bg-warning text-dark">{rating.toFixed(1)} ★</div>
         </div>
       </Card.Body>
     </Card>
   );
-}
+};
+
+export default SeriesCard;

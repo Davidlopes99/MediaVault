@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { Accordion, Modal, Button, Offcanvas, Alert, Breadcrumb } from 'react-bootstrap';
+import { Accordion, Alert, Breadcrumb } from 'react-bootstrap';
 
 export default function SobrePage() {
-  const [showModal, setShowModal] = useState(false);
-  const [showCanvas, setShowCanvas] = useState(false);
   const [showAlerta, setShowAlerta] = useState(true);
 
   return (
     <div className="container mt-4">
-      <Breadcrumb>
+      <Breadcrumb className="mb-4">
+        <Breadcrumb.Item href="/">Início</Breadcrumb.Item>
         <Breadcrumb.Item active>Sobre</Breadcrumb.Item>
       </Breadcrumb>
 
@@ -16,7 +15,7 @@ export default function SobrePage() {
 
       {showAlerta && (
         <Alert variant="info" onClose={() => setShowAlerta(false)} dismissible>
-          Este projeto foi desenvolvido trabalho da matéria de desenvolvimento web.
+          Este projeto foi desenvolvido como parte da disciplina de Desenvolvimento Web.
         </Alert>
       )}
 
@@ -24,51 +23,29 @@ export default function SobrePage() {
         <Accordion.Item eventKey="0">
           <Accordion.Header>Qual o objetivo do site?</Accordion.Header>
           <Accordion.Body>
-            O objetivo é listar, avaliar e interagir com filmes e séries, usando React e Bootstrap 5.
+            O objetivo é permitir que usuários explorem filmes e séries populares, façam buscas, filtrem por gênero e visualizem detalhes, tudo com uma interface construída em React e Bootstrap 5.
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="1">
           <Accordion.Header>Como os dados são carregados?</Accordion.Header>
           <Accordion.Body>
-            Atualmente, os dados são simulados localmente no código, mas podem ser conectados a uma API futuramente.
+            Os dados são consumidos diretamente da API do The Movie Database (TMDb), possibilitando a exibição dinâmica de conteúdos e filtros com base em gêneros e nomes.
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>Quais tecnologias foram utilizadas?</Accordion.Header>
+          <Accordion.Body>
+            Este projeto foi desenvolvido com React, TypeScript, React Router e Bootstrap 5. As informações são obtidas em tempo real da API pública do TMDb.
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
 
-      <div className="mb-4">
-        <Button variant="dark" className="me-2" onClick={() => setShowModal(true)}>
-          Contato
-        </Button>
-        <Button variant="secondary" onClick={() => setShowCanvas(true)}>
-          Abrir menu lateral
-        </Button>
+      <hr className="my-5" />
+      <div>
+        <h4>Contato</h4>
+        <p>📧 <strong>Email:</strong> davidvazquez@id.uff.br</p>
+        <p>📞 <strong>Telefone:</strong> (21) 99123-2977</p>
       </div>
-
-      {/* Modal de Contato */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Contato</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>Email: exemplo@email.com</p>
-          <p>Telefone: (21) 99999-0000</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Fechar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Offcanvas */}
-      <Offcanvas show={showCanvas} onHide={() => setShowCanvas(false)} placement="end">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Mais opções</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          Aqui você podem ser adicionados atalhos, links úteis, ou configurações.
-        </Offcanvas.Body>
-      </Offcanvas>
     </div>
   );
 }
