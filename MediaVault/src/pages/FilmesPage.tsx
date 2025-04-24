@@ -69,31 +69,57 @@ const FilmesPage: React.FC = () => {
       const base = searchTerm
         ? 'https://api.themoviedb.org/3/search/movie'
         : 'https://api.themoviedb.org/3/discover/movie';
-
+    
       const genreParam = selectedGenre ? `&with_genres=${selectedGenre}` : '';
       const providerParam = selectedProvider
         ? `&with_watch_providers=${selectedProvider}&watch_region=BR`
         : '';
       const certParam = classification ? `&certification_country=BR&certification=${classification}` : '';
       const queryParam = searchTerm ? `&query=${encodeURIComponent(searchTerm)}` : '';
-      const sortParam = searchTerm ? '' : `&sort_by=${sortBy}`;
-
+      const sortParam = (sortBy !== 'title.asc' && sortBy !== 'title.desc' && !searchTerm)
+        ? `&sort_by=${sortBy}` : '';
+    
       try {
-        const res = await fetch(
-          `${base}?api_key=${API_KEY}&language=pt-BR&page=${page}${sortParam}${genreParam}${providerParam}${certParam}${queryParam}`
-        );
-        const data = await res.json();
-        setMovies(data.results);
-        setTotalPages(data.total_pages);
+        let allResults: Movie[] = [];
+        let currentPage = 1;
+        let totalPagesFetched = sortBy === 'title.asc' || sortBy === 'title.desc' ? 5 : 1; // limite de 5 páginas se ordenando localmente
+    
+        do {
+          const res = await fetch(
+            `${base}?api_key=${API_KEY}&language=pt-BR&page=${currentPage}${sortParam}${genreParam}${providerParam}${certParam}${queryParam}`
+          );
+          const data = await res.json();
+          allResults = [...allResults, ...data.results];
+          currentPage++;
+          if (sortBy !== 'title.asc' && sortBy !== 'title.desc') {
+            setTotalPages(data.total_pages);
+            break;
+          }
+        } while (currentPage <= totalPagesFetched);
+    
+        if (sortBy === 'title.asc') {
+          allResults.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (sortBy === 'title.desc') {
+          allResults.sort((a, b) => b.title.localeCompare(a.title));
+        }
+    
+        setMovies(allResults);
+        if (sortBy === 'title.asc' || sortBy === 'title.desc') {
+          setTotalPages(1); // Força uma página só
+          setPage(1);
+        }
+    
       } catch (err) {
         console.error('Erro ao buscar filmes:', err);
       } finally {
         setLoading(false);
       }
     };
-
+    
+  
     fetchMovies();
   }, [page, sortBy, selectedGenre, selectedProvider, classification, searchTerm]);
+  
 
   const handleCardClick = (id: number) => {
     // fetch details and open modal

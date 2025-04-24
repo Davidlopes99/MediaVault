@@ -48,8 +48,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           <option value="vote_average.asc">Piores avaliados</option>
           <option value="release_date.desc">Mais recentes</option>
           <option value="release_date.asc">Mais antigos</option>
-          <option value="original_title.asc">Título A-Z</option>
-          <option value="original_title.desc">Título Z-A</option>
+          <option value="title.asc">Título A-Z (português)</option>
+          <option value="title.desc">Título Z-A (português)</option>
         </Form.Select>
       </Form.Group>
 
