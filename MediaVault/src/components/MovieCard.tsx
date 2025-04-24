@@ -18,7 +18,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ title, imageUrl, description, rat
         <Card.Text>{description}</Card.Text>
         <div className="d-flex justify-content-between align-items-center">
           <Button variant="primary" onClick={onClick}>Detalhes</Button>
-          <div className="badge bg-warning text-dark">{rating} ★</div>
+          <div className="badge bg-warning text-dark">{rating.toFixed(1)} ★</div>
         </div>
       </Card.Body>
     </Card>
