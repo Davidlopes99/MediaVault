@@ -1,6 +1,7 @@
+import "../styles/footer.css";
 export default function Footer() {
   return (
-    <footer className="bg-dark text-white text-center py-4 mt-5">
+    <footer className="footer-custom bg-dark text-white text-center py-4 mt-5">
       <div className="container">
         <p className="mb-2">&copy; {new Date().getFullYear()} MediaVault. Todos os direitos reservados.</p>
         
@@ -14,8 +15,6 @@ export default function Footer() {
         </div>
 
         <p className="small mb-0">Desenvolvido com React + Bootstrap</p>
-
-
       </div>
     </footer>
   );

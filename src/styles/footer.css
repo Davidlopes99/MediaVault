@@ -1,0 +1,45 @@
+/* footer.css */
+.footer-custom {
+    width: 100%;
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    color: #f1c40f;             /* Dourado */
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+    font-family: 'Cinzel', serif; /* Fonte com cara de cartaz clássico */
+  }
+  
+  .footer-custom .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .footer-custom p {
+    margin: 0.5rem 0;
+  }
+  
+  /* Ícones sociais em linha e com hover dourado suave */
+  .footer-custom .social-icons {
+    display: inline-flex;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .footer-custom .social-icons a {
+    color: #f1c40f;
+    font-size: 1.5rem;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  
+  .footer-custom .social-icons a:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+  }
+  
+  .footer-custom .small {
+    display: block;
+    margin-top: 1rem;
+    color: #d4af37;
+    font-size: 0.9rem;
+  }
+  

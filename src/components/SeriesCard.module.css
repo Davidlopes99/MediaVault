@@ -1,0 +1,59 @@
+.cardWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .cardImg {
+    object-fit: cover;
+    height: 200px; /* Ajuste conforme necessário */
+  }
+  
+  .cardBody {
+    padding: 1rem;
+    flex-grow: 1;
+    min-height: 220px; /* Altura mínima para o corpo do card */
+  }
+  
+  .cardTitle {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .cardText {
+    font-size: 0.875rem;
+    color: #666;
+    height: 100px; /* Define uma altura fixa para a sinopse */
+    overflow: hidden; /* Esconde o excesso de texto */
+  }
+  
+  .cardFooter {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ddd;
+    height: 95px; /* Altura fixa para o footer */
+  }
+  
+  .seasons {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .actions .badge {
+    font-size: 1rem;
+    padding: 0.5rem 0.8rem;
+  }
+  
+  .actions button {
+    padding: 0.5rem 1rem;
+  }
+  

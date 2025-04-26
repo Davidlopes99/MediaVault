@@ -1,0 +1,72 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #8B0000;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.movieCarousel, .tvShowCarousel {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.carouselControlPrev, .carouselControlNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #DAA520;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.carouselControlPrev {
+  left: -100px;
+}
+
+.carouselControlNext {
+  right: -100px;
+}
+
+.carouselControlPrev, .carouselControlNext {
+  font-size: 25px;
+  padding: 5px 10px;
+  width: 80px;
+  height: 80px;
+}
+
+
+.movieCardCol > .card,
+.tvShowCardCol > .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.movieCardCol > .card .card-body,
+.tvShowCardCol > .card .card-body {
+  flex: 1 1 auto;
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+}
+
+/* Truncar a sinopse após 5 linhas com “…” */
+.movieCardCol > .card .card-body .card-text,
+.tvShowCardCol > .card .card-body .card-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
