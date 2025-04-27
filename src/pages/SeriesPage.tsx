@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Spinner, Button, Modal, Accordion } from "react-bootstrap";
+import { Row, Col, Spinner, Button } from "react-bootstrap";
 import SeriesCard from "../components/SeriesCard";
-import SidebarSeries from '../components/SidebarSeries';
-import "../styles/SeriesPage.module.css";
+import SidebarSeries from "../components/SidebarSeries";
+import styles from "../styles/SeriesPage.module.css"; 
+import TVShowDetailModal from "../components/SeriesDetailModal";
 
 type Series = {
   id: number;
@@ -56,6 +57,9 @@ const SeriesPage: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
 
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+
+  // IDs dos principais provedores (Netflix, Disney+, Max, Prime Video)
+  const mainProviderIds = [8, 337, 1899, 119]; 
 
   const fetchGenres = async () => {
     try {
@@ -129,8 +133,11 @@ const SeriesPage: React.FC = () => {
       params.append("query", searchTerm);
     }
 
-    if (selectedProvider) {
-      params.append("with_watch_providers", selectedProvider);
+    // Aplicar filtro de provedores apenas se não estiver pesquisando
+    if (!searchTerm) {
+      // Se não houver provedor selecionado, usar os principais provedores por padrão
+      const providersToFilter = selectedProvider || mainProviderIds.join('|');
+      params.append("with_watch_providers", providersToFilter);
       params.append("watch_region", "BR");
     }
 
@@ -203,9 +210,9 @@ const SeriesPage: React.FC = () => {
     classification,
     minRating,
     maxRating,
-    selectedCountry
+    selectedCountry,
   ]);
-  
+
   useEffect(() => {
     // Quando a página ou filtros mudam, carrega as séries
     fetchSeries(page, sortBy);
@@ -218,24 +225,25 @@ const SeriesPage: React.FC = () => {
     classification,
     minRating,
     maxRating,
-    selectedCountry
+    selectedCountry,
   ]);
-  
 
   const handleSeriesClick = (serie: Series) => {
     setSelectedSeries(serie);
-    setEpisodesBySeason({}); 
+    setEpisodesBySeason({});
   };
 
   const handleCloseModal = () => setSelectedSeries(null);
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Séries</h2>
+      {/* Título da página com a classe do CSS para mudar a cor */}
+      <h2 className={`${styles["page-title"]} mb-4`}>Séries</h2>
 
       <Row>
         <Col md={3}>
           <SidebarSeries
+            // Passando todas as props necessárias para o SidebarSeries
             sortBy={sortBy}
             setSortBy={setSortBy}
             genres={genres}
@@ -280,21 +288,24 @@ const SeriesPage: React.FC = () => {
                 ))}
               </Row>
 
+              {/* Usando as classes do CSS para os botões de navegação */}
               <div className="d-flex justify-content-between align-items-center mt-4">
                 <Button
                   variant="secondary"
                   disabled={page === 1}
                   onClick={() => setPage((p) => p - 1)}
+                  className={`${styles["pagination-button"]} ${styles["previous"]}`}
                 >
                   Página Anterior
                 </Button>
-                <span>
+                <span className={styles["pagination-info"]}>
                   Página {page} de {totalPages}
                 </span>
                 <Button
                   variant="primary"
                   disabled={page === totalPages}
                   onClick={() => setPage((p) => p + 1)}
+                  className={`${styles["pagination-button"]} ${styles["next"]}`}
                 >
                   Próxima Página
                 </Button>
@@ -304,64 +315,14 @@ const SeriesPage: React.FC = () => {
         </Col>
       </Row>
 
-      <Modal
+      {/* Usando o TVShowDetailModal */}
+      <TVShowDetailModal
         show={!!selectedSeries}
+        tvShow={selectedSeries}
         onHide={handleCloseModal}
-        centered
-        size="lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedSeries?.name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Row>
-            <Col md={4}>
-              <img
-                src={`https://image.tmdb.org/t/p/w500${selectedSeries?.poster_path}`}
-                alt={selectedSeries?.name}
-                className="img-fluid"
-              />
-            </Col>
-            <Col md={8}>
-              <p>
-                <strong>Sinopse:</strong> {selectedSeries?.overview}
-              </p>
-              <p>
-                <strong>Temporadas:</strong> {selectedSeries?.number_of_seasons}
-              </p>
-              <p>
-                <strong>Classificação:</strong> {selectedSeries?.vote_average.toFixed(1)}
-              </p>
-
-              <Accordion>
-                {[...Array(selectedSeries?.number_of_seasons)].map(
-                  (_, index) => (
-                    <Accordion.Item
-                      eventKey={index.toString()}
-                      key={index}
-                      onClick={() => fetchEpisodes(index + 1)}
-                    >
-                      <Accordion.Header>Temporada {index + 1}</Accordion.Header>
-                      <Accordion.Body>
-                        {episodesBySeason[index + 1] && (
-                          <ul>
-                            {episodesBySeason[index + 1].map((episode) => (
-                              <li key={episode.episode_number}>
-                                <strong>{episode.name}</strong>
-                                <p>{episode.overview}</p>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  )
-                )}
-              </Accordion>
-            </Col>
-          </Row>
-        </Modal.Body>
-      </Modal>
+        fetchEpisodes={fetchEpisodes}
+        episodesBySeason={episodesBySeason}
+      />
     </div>
   );
 };

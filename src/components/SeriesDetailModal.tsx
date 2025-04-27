@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Modal, Row, Col, Accordion } from "react-bootstrap";
 import { TVShow, Episode } from "C:/Users/david/Documents/GitHub/MediaVault/src/types"; // Defina seus tipos em um arquivo separado
+import styles from "./SeriesDetailModal.module.css"; // Importe o CSS do modal
 
 type TVShowDetailModalProps = {
   show: boolean;
@@ -27,9 +28,12 @@ const TVShowDetailModal: React.FC<TVShowDetailModalProps> = ({
   }, [tvShow, fetchEpisodes]);
 
   return (
-    <Modal show={show} onHide={onHide} centered size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>{tvShow?.name}</Modal.Title>
+    <Modal show={show} onHide={onHide} centered size="lg" contentClassName={styles.modalContent}>
+      <Modal.Header className={styles.modalHeader}>
+        <Modal.Title className={styles.modalTitle}>{tvShow?.name}</Modal.Title>
+        <button className={styles.customCloseButton} onClick={onHide}>
+          ×
+        </button>
       </Modal.Header>
       <Modal.Body>
         <Row>
@@ -37,17 +41,17 @@ const TVShowDetailModal: React.FC<TVShowDetailModalProps> = ({
             <img
               src={`https://image.tmdb.org/t/p/w500${tvShow?.poster_path}`}
               alt={tvShow?.name}
-              className="img-fluid"
+              className={`${styles.modalPoster} img-fluid`}
             />
           </Col>
           <Col md={8}>
-            <p>
+            <p className={styles.modalDescription}>
               <strong>Sinopse:</strong> {tvShow?.overview}
             </p>
-            <p>
+            <p className={styles.modalDescription}>
               <strong>Temporadas:</strong> {tvShow?.number_of_seasons}
             </p>
-            <p>
+            <p className={styles.modalRating}>
               <strong>Classificação:</strong> {tvShow?.vote_average.toFixed(1)} ★
             </p>
 

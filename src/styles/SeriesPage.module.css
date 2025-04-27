@@ -1,45 +1,47 @@
-/* SeriesPage.css */
-.card {
-    height: 100%;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  }
-  
-  .card-img-top {
-    height: 300px;
-    object-fit: cover;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1rem;
-  }
-  
-  .card-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-  
-  .card-text {
-    font-size: 0.95rem;
-    color: #444;
-    max-height: 90px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .card .badge {
-    font-size: 0.9rem;
-  }
-  
+.container {
+  background-color: #121212;
+  color: white;
+  padding: 20px;
+}
+
+.title {
+  color: white;
+  font-size: 4rem;
+  margin-bottom: 30px;
+}
+
+.pageButton {
+  background-color: #f8c100; /* amarelo */
+  color: #000000; /* preto */
+  border: 2px solid #000000; 
+}
+
+.pageButton:hover {
+  background-color: #000000; /* preto */
+  color: #f8c100; /* amarelo */
+  border: 2px solid #f8c100;
+}
+
+.pageButton:disabled {
+  background-color: #999;
+  color: white;
+  cursor: not-allowed;
+  border: none;
+}
+
+.modal-body {
+  background-color: #121212;
+}
+
+.modal-title {
+  color: #f8c100;
+}
+
+.modal-body p {
+  color: black;
+}
+
+.modal-body img {
+  border: 3px solid #f8c100;
+  padding: 10px;
+}
