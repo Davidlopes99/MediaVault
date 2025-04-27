@@ -1,0 +1,180 @@
+/* SidebarFilmes.module.css */
+
+/* Estilo geral da sidebar */
+.sidebar {
+    padding: 20px;
+    background-color: #1d1b17;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Espaçamento entre seções */
+  .section {
+    margin-bottom: 24px;
+  }
+  
+  /* Título de cada seção */
+  .label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: inline-block;
+    color: #ffffff;
+  }
+  
+  /* Botões de gênero e classificação */
+  .buttonOutline,
+  .buttonSelected {
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    color: white;
+    background-color: #615c49;
+  }
+  
+  /* Botão selecionado (ativo) */
+  .buttonSelected {
+    background-color: #ffc107;
+    color: rgb(0, 0, 0);
+  }
+  
+  /* Hover correto nos botões que ainda não foram selecionados */
+  .buttonOutline:hover {
+    background-color: #ffc107;
+    color: rgb(0, 0, 0);
+  }
+  
+  /* Estilo para o slider de nota */
+  .slider {
+    margin-top: 12px;
+  }
+  
+  /* Estilo para o label do slider */
+  .sliderLabel {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: inline-block;
+    color: #ffffff;
+    font-size: 1rem;
+  }
+  
+  /* Input de busca */
+  .input {
+    border-radius: 20px;
+  }
+  
+  /* Botão principal Filtrar */
+  .filterButton {
+    border-radius: 20px;
+    padding: 10px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #DAA520;
+    border-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .filterButton:hover {
+    background-color: #ffc107;
+    color: rgb(0, 0, 0);
+  }
+  
+  /* Seções de select */
+  .select {
+    border-radius: 20px;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .sidebar {
+      padding: 15px;
+    }
+  }
+  
+  /* Estilo dos dropdowns (selects) */
+.select {
+    border-radius: 20px;
+    padding: 8px 12px;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo preto semitransparente */
+    color: #DAA520; /* Dourado no texto */
+    border: 1px solid #DAA520;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  
+  /* Estilo quando passa o mouse no select */
+  .select:hover {
+    background-color: #ffc107; /* Amarelo de destaque */
+    color: black;
+  }
+  
+  /* Estilo quando o select está focado (clicado) */
+  .select:focus {
+    background-color: #ffc107;
+    color: black;
+    border-color: black;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
+  }
+  
+  /* Estilos globais do rc-slider */
+:global(.rc-slider-rail) {
+    height: 8px;
+    background-color: #615c49; /* Cor da trilha não selecionada */
+    border-radius: 4px;
+}
+
+:global(.rc-slider-track) {
+    height: 8px;
+    background-color: #ffc107; /* Amarelo na trilha selecionada */
+    border-radius: 4px;
+}
+
+:global(.rc-slider-handle) {
+    width: 20px;
+    height: 20px;
+    margin-top: -6px; /* Para centralizar verticalmente */
+    background-color: #ffffff; /* Amarelo */
+    border: 2px solid black;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: border 0.3s, background-color 0.3s;
+}
+
+:global(.rc-slider-handle:hover) {
+    background-color: #ffea00; /* Amarelo mais claro no hover */
+    border-color: black;
+}
+
+:global(.rc-slider-mark) {
+    color: rgb(247, 5, 5);
+    font-size: 0.8rem;
+}
+
+:global(.rc-slider-mark-text) {
+    color: #ffffff;
+}
+
+:global(.rc-slider-mark-text-active) {
+    color: #ffc107; /* Amarelo para o texto ativo */
+    
+}
+
+/* Cor dos pontos de marcação não selecionados (padrão) */
+:global(.rc-slider-dot) {
+    background-color: #ffffff; /* Cor do ponto quando não está ativo */
+    border-color: #ffffff; /* Borda do ponto */
+}
+
+/* Cor dos pontos de marcação ao passar o mouse */
+:global(.rc-slider-dot:hover) {
+    background-color: #ffc107; /* Cor do ponto ao passar o mouse */
+    border-color: #ffffff; /* Borda do ponto ao passar o mouse */
+}
+
+/* Cor do ponto ativo (entre os dois handles) */
+:global(.rc-slider-dot-active) {
+    background-color: #ffc107; /* Cor do ponto ativo */
+    border-color: #000000; /* Borda do ponto ativo */
+}

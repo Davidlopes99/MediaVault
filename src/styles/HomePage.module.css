@@ -1,12 +1,13 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  background-color: #151313;
 }
 
 .sectionTitle {
   font-size: 2rem;
   font-weight: bold;
-  color: #8B0000;
+  color: #ffffff;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -69,4 +70,11 @@
   -webkit-box-orient: vertical; 
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.carouselControlPrev:hover,
+.carouselControlNext:hover {
+  background-color: rgba(255, 215, 0, 0.9); /* fundo muda para um dourado claro */
+  color: #000000; /* a seta muda para preto */
+  transition: background-color 0.3s, color 0.3s; /* animação suave */
 }

@@ -151,7 +151,7 @@ const HomePage: React.FC = () => {
 
   return (
     <Container fluid className={`${styles.container} mt-4`}>
-      <h1 className="text-center mb-4">Bem-vindo ao Catálogo de Filmes e Séries</h1>
+      <h1 className="text-center mb-4"></h1>
       
       {/* Filmes Populares */}
       <section>

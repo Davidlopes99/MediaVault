@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Row, Col } from "react-bootstrap";
 import { Movie } from "../types"; // Ajuste o caminho do arquivo de tipos
+import styles from "C:/Users/david/Documents/GitHub/MediaVault/src/components/MovieDetailModal.module.css"; // Importe o CSS
 
 type MovieDetailModalProps = {
   show: boolean;
@@ -10,9 +11,15 @@ type MovieDetailModalProps = {
 
 const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, movie, onHide }) => {
   return (
-    <Modal show={show} onHide={onHide} size="lg" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>{movie?.title}</Modal.Title>
+    <Modal
+      show={show}
+      onHide={onHide}
+      size="lg"
+      centered
+      contentClassName={styles.modalContent} // Aplica a classe CSS diretamente no modal
+    >
+      <Modal.Header closeButton className={styles.modalHeader}>
+        <Modal.Title className={styles.modalTitle}>{movie?.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row>
@@ -20,11 +27,11 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, movie, onHide
             <img
               src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`}
               alt={movie?.title}
-              className="img-fluid rounded"
+              className={`${styles.modalPoster} img-fluid rounded`}
             />
           </Col>
           <Col md={8}>
-            <p>
+            <p className={styles.modalDescription}>
               <strong>Sinopse completa:</strong> {movie?.overview}
             </p>
             <p>
@@ -32,7 +39,9 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, movie, onHide
             </p>
             <p>
               <strong>Gêneros:</strong>{" "}
-              {movie?.genres?.length ? movie?.genres?.map((g) => g.name).join(", ") : "Sem gêneros disponíveis"}
+              {movie?.genres?.length
+                ? movie?.genres?.map((g) => g.name).join(", ")
+                : "Sem gêneros disponíveis"}
             </p>
             <p>
               <strong>Avaliação média:</strong> {movie?.vote_average.toFixed(1)} ★

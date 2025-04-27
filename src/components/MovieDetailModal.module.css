@@ -1,0 +1,88 @@
+/* Estilo geral do modal */
+/* vai ser aplicado em :global(.modal-content) via contentClassName */
+.modalContent {
+    background-color: #151313 !important;
+    border: none;
+    border-radius: 12px;
+    height: 13cm;
+    padding: 20px;
+    color: white;
+  }
+  
+
+/* Cabeçalho do modal */
+.modalHeader {
+    background-color: 151313; /* Mesma cor do corpo */
+    border-bottom: none; /* Remove a linha branca padrão */
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-color: #000;
+    height: 2cm;
+}
+
+/* Título do modal */
+.modalTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff; /* Cor branca para o título */
+    text-align: center;
+    margin-bottom: 20px;
+    background: transparent; /* Remove fundo adicional */
+    padding: 10px 0; /* Ajusta o padding */
+    border-color: #000;
+}
+
+/* Imagem do filme no modal */
+.modalPoster {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-color: #000;
+}
+
+/* Descrição do filme */
+.modalDescription {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    text-align: justify;
+    border-color: #000;
+}
+
+/* Classificação do filme */
+.modalRating {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffc107; /* Cor dourada */
+    margin-bottom: 15px;
+}
+
+/* Botão de fechar o modal */
+.modalCloseButton {
+    background-color: #daaa20;
+    color: #000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+/* Hover no botão de fechar */
+.modalCloseButton:hover {
+    background-color: #ffc107; /* Muda para amarelo claro ao passar o mouse */
+    color: black;
+}
+
+/* Ajuste do modal em telas menores */
+@media (max-width: 768px) {
+    .modalContent {
+        padding: 15px;
+    }
+    .modalTitle {
+        font-size: 1.5rem;
+    }
+}

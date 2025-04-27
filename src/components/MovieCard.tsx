@@ -1,7 +1,8 @@
-import { Card, Button } from "react-bootstrap";
-import styles from "./MovieCard.module.css";
+import React from 'react';
+import { Card } from 'react-bootstrap';
+import styles from './MovieCard.module.css';
 
-type Props = {
+type MovieCardProps = {
   title: string;
   imageUrl: string;
   description: string;
@@ -9,18 +10,30 @@ type Props = {
   onClick: () => void;
 };
 
-export default function MovieCard({ title, imageUrl, description, rating, onClick }: Props) {
+const MovieCard: React.FC<MovieCardProps> = ({
+  title,
+  imageUrl,
+  description,
+  rating,
+  onClick
+}) => {
   return (
     <Card className={styles.cardWrapper}>
-      <Card.Img variant="top" src={imageUrl} className="card-img-top" />
+      <Card.Img variant="top" src={imageUrl} alt={title} />
       <div className={styles.cardBody}>
         <Card.Title className={styles.cardTitle}>{title}</Card.Title>
         <Card.Text className={styles.cardText}>{description}</Card.Text>
       </div>
       <div className={styles.cardFooter}>
-        <Button onClick={onClick}>Detalhes</Button>
-        <span className="badge bg-warning text-dark">{rating.toFixed(1)} ★</span>
+        <button onClick={onClick} className={styles.detailButton}>
+          Detalhes
+        </button>
+        <span className={styles.ratingBadge}>
+          {rating.toFixed(1)} ★
+        </span>
       </div>
     </Card>
   );
-}
+};
+
+export default MovieCard;

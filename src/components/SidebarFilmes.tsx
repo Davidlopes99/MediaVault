@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css'; // estilos do slider
+import styles from './SidebarFilmes.module.css'; // Importa o CSS modular
 
 const classifications = ['L', '10', '12', '14', '16', '18'];
 
@@ -38,7 +39,6 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
   maxRating, setMaxRating,
   countries, selectedCountry, setSelectedCountry,
 }) => {
-  // Estados locais
   const [localSortBy, setLocalSortBy] = useState(sortBy);
   const [localSelectedGenre, setLocalSelectedGenre] = useState(selectedGenre);
   const [localSelectedProvider, setLocalSelectedProvider] = useState(selectedProvider);
@@ -66,11 +66,15 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
   };
 
   return (
-    <Form className="mb-4">
+    <Form className={`${styles.sidebar} mb-4`}>
       {/* Ordenar por */}
-      <Form.Group controlId="sortSelect" className="mb-4">
-        <Form.Label>Ordenar por:</Form.Label>
-        <Form.Select value={localSortBy} onChange={e => setLocalSortBy(e.target.value)}>
+      <Form.Group controlId="sortSelect" className={styles.section}>
+        <Form.Label className={styles.label}>Ordenar por:</Form.Label>
+        <Form.Select
+          value={localSortBy}
+          onChange={e => setLocalSortBy(e.target.value)}
+          className={styles.select}
+        >
           <option value="popularity.desc">Mais populares</option>
           <option value="popularity.asc">Menos populares</option>
           <option value="vote_average.desc">Mais bem avaliados</option>
@@ -82,16 +86,16 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
         </Form.Select>
       </Form.Group>
 
-      {/* Gêneros como botões */}
-      <div className="mb-4">
-        <Form.Label>Gêneros:</Form.Label>
+      {/* Gêneros */}
+      <div className={styles.section}>
+        <Form.Label className={styles.label}>Gêneros:</Form.Label>
         <div>
           {genres.map(g => (
             <Button
               key={g.id}
               variant={localSelectedGenre === String(g.id) ? 'secondary' : 'outline-secondary'}
               size="sm"
-              className="me-2 mb-2 rounded-pill"
+              className={localSelectedGenre === String(g.id) ? styles.buttonSelected : styles.buttonOutline}
               onClick={() =>
                 setLocalSelectedGenre(localSelectedGenre === String(g.id) ? '' : String(g.id))
               }
@@ -103,15 +107,15 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
       </div>
 
       {/* Classificação Etária */}
-      <div className="mb-4">
-        <Form.Label>Classificação:</Form.Label>
+      <div className={styles.section}>
+        <Form.Label className={styles.label}>Classificação:</Form.Label>
         <div>
           {classifications.map(c => (
             <Button
               key={c}
               variant={localClassification === c ? 'secondary' : 'outline-secondary'}
               size="sm"
-              className="me-2 mb-2 rounded-pill"
+              className={localClassification === c ? styles.buttonSelected : styles.buttonOutline}
               onClick={() => setLocalClassification(localClassification === c ? '' : c)}
             >
               {c}
@@ -121,11 +125,12 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
       </div>
 
       {/* Onde assistir */}
-      <Form.Group controlId="providerSelect" className="mb-4">
-        <Form.Label>Onde assistir:</Form.Label>
+      <Form.Group controlId="providerSelect" className={styles.section}>
+        <Form.Label className={styles.label}>Onde assistir:</Form.Label>
         <Form.Select
           value={localSelectedProvider}
           onChange={e => setLocalSelectedProvider(e.target.value)}
+          className={styles.select}
         >
           <option value="">Todos</option>
           {providers.map(p => (
@@ -137,11 +142,12 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
       </Form.Group>
 
       {/* País de produção */}
-      <Form.Group controlId="countrySelect" className="mb-4">
-        <Form.Label>País de produção:</Form.Label>
+      <Form.Group controlId="countrySelect" className={styles.section}>
+        <Form.Label className={styles.label}>País de produção:</Form.Label>
         <Form.Select
           value={localSelectedCountry}
           onChange={e => setLocalSelectedCountry(e.target.value)}
+          className={styles.select}
         >
           <option value="">Todos</option>
           {countries.map(c => (
@@ -153,19 +159,22 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
       </Form.Group>
 
       {/* Busca por nome */}
-      <Form.Group controlId="searchInput" className="mb-4">
-        <Form.Label>Buscar por nome:</Form.Label>
+      <Form.Group controlId="searchInput" className={styles.section}>
+        <Form.Label className={styles.label}>Buscar por nome:</Form.Label>
         <Form.Control
           type="text"
           placeholder="Exemplo: Vingadores"
           value={localSearchTerm}
           onChange={e => setLocalSearchTerm(e.target.value)}
+          className={styles.input}
         />
       </Form.Group>
 
-      {/* Filtro de nota com slider de intervalo */}
-      <div className="mb-4">
-        <Form.Label>Pontuação: {localMinRating} – {localMaxRating}</Form.Label>
+      {/* Filtro de nota */}
+      <div className={styles.section}>
+        <Form.Label className={styles.sliderLabel}>
+          Pontuação: {localMinRating} – {localMaxRating}
+        </Form.Label>
         <div className="px-2">
           <Slider
             range
@@ -176,13 +185,14 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
             value={[localMinRating, localMaxRating]}
             onChange={handleRangeChange}
             marks={{ 0: '0', 5: '5', 10: '10' }}
+            className={styles.slider}
           />
         </div>
       </div>
 
       {/* Botão Filtrar */}
       <div className="d-grid">
-        <Button variant="primary" onClick={applyFilters}>
+        <Button variant="primary" onClick={applyFilters} className={styles.filterButton}>
           Filtrar
         </Button>
       </div>
