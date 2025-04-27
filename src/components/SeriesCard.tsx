@@ -40,11 +40,11 @@ const SeriesCard: React.FC<SeriesCardProps> = ({
             variant="primary"
             size="sm"
             onClick={onClick}
-            className="me-2"
+            className={`me-2 ${styles.detailButton}`}
           >
             Detalhes
           </Button>
-          <span className="badge bg-warning text-dark">
+          <span className={`badge ${styles.ratingBadge}`}>
             {rating.toFixed(1)} ★
           </span>
         </div>

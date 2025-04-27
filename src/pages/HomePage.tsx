@@ -3,7 +3,7 @@ import { Row, Col, Spinner, Button, Container } from "react-bootstrap";
 import MovieCard from "../components/MovieCard";
 import SeriesCard from "../components/SeriesCard";
 import styles from "../styles/HomePage.module.css"; // Importa o módulo de CSS
-import TVShowDetailModal from "../components/TVShowDetailModal";
+import TVShowDetailModal from "../components/SeriesDetailModal";
 import MovieDetailModal from "../components/MovieDetailModal";
 
 type Movie = {

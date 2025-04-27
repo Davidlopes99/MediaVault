@@ -76,6 +76,39 @@
     background-color: #ffc107; /* Muda para amarelo claro ao passar o mouse */
     color: black;
 }
+.modalContent {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .customCloseButton {
+    background: #f8c100;
+    border: 2px solid #000000; /* Agora tem borda visível */
+    border-radius: 8px;
+    font-size: 1.6rem;
+    color: black;
+    cursor: pointer;
+    margin-left: auto;
+    margin-top: -30px;
+    padding: 1px 8px
+  }
+  
+  .customCloseButton:hover {
+    color: #f8c100;
+    background: black;
+    border: 2px solid #f8c100; /* Borda amarela ao passar o mouse */
+  }
+  
 
 /* Ajuste do modal em telas menores */
 @media (max-width: 768px) {

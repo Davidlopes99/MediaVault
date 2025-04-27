@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Spinner, Button, Modal } from "react-bootstrap";
+import { Row, Col, Spinner, Button } from "react-bootstrap";
 import MovieCard from "../components/MovieCard";
 import Sidebar from "../components/SidebarFilmes";
+import styles from "../styles/FilmesPage.module.css";
+import MovieDetailModal from "../components/MovieDetailModal";
 
 // Definições de tipos
 type Movie = {
@@ -153,13 +155,12 @@ const FilmesPage: React.FC = () => {
     };
     fetchDetails();
   };
-  
 
   const handleClose = () => setSelectedMovie(null);
 
   return (
-    <div className="container mt-4">
-      <h1>Filmes</h1>
+    <div className={`container mt-4 ${styles.container}`}>
+      <h1 className={styles.title}>Filmes</h1>
       <Row>
         <Col md={3}>
           <Sidebar
@@ -224,62 +225,43 @@ const FilmesPage: React.FC = () => {
                 ))}
               </Row>
               <div className="d-flex justify-content-between align-items-center mt-4">
-                <Button
-                  variant="secondary"
-                  disabled={page === 1}
-                  onClick={() => setPage((p) => p - 1)}
-                >
-                  Página Anterior
-                </Button>
+              <Button
+                className={styles.pageButton}
+                disabled={page === 1}
+                onClick={() => {
+                  setPage((p) => p - 1);
+                  
+                }}
+              >
+                Página Anterior
+              </Button>
+
                 <span>
                   Página {page} de {totalPages}
                 </span>
                 <Button
-                  variant="primary"
+                  className={styles.pageButton}
                   disabled={page === totalPages}
-                  onClick={() => setPage((p) => p + 1)}
+                  onClick={() => {
+                    setPage((p) => p + 1);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
                 >
                   Próxima Página
                 </Button>
+
               </div>
             </>
           )}
         </Col>
       </Row>
 
-      <Modal show={!!selectedMovie} onHide={handleClose} size="lg" centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedMovie?.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Row>
-            <Col md={4}>
-              <img
-                src={`https://image.tmdb.org/t/p/w500${selectedMovie?.poster_path}`}
-                alt={selectedMovie?.title}
-                className="img-fluid rounded"
-              />
-            </Col>
-            <Col md={8}>
-              <p>
-                <strong>Sinopse completa:</strong> {selectedMovie?.overview}
-              </p>
-              <p>
-                <strong>Data de lançamento:</strong>{" "}
-                {selectedMovie?.release_date}
-              </p>
-              <p>
-                <strong>Gêneros:</strong>{" "}
-                {selectedMovie?.genres.map((g) => g.name).join(", ")}
-              </p>
-              <p>
-                <strong>Avaliação média:</strong>{" "}
-                {selectedMovie?.vote_average.toFixed(1)} ★
-              </p>
-            </Col>
-          </Row>
-        </Modal.Body>
-      </Modal>
+      {/* Novo Modal usando o MovieDetailModal */}
+      <MovieDetailModal
+        show={!!selectedMovie}
+        movie={selectedMovie}
+        onHide={handleClose}
+      />
     </div>
   );
 };

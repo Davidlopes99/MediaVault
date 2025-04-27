@@ -16,10 +16,14 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, movie, onHide
       onHide={onHide}
       size="lg"
       centered
+      animation={true}
       contentClassName={styles.modalContent} // Aplica a classe CSS diretamente no modal
     >
-      <Modal.Header closeButton className={styles.modalHeader}>
+      <Modal.Header className={styles.modalHeader}>
         <Modal.Title className={styles.modalTitle}>{movie?.title}</Modal.Title>
+        <button className={styles.customCloseButton} onClick={onHide}>
+          ×
+        </button>
       </Modal.Header>
       <Modal.Body>
         <Row>
