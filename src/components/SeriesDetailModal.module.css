@@ -89,10 +89,11 @@
     box-shadow: none; /* Remove o foco do accordion */
 }
 
-.accordion-body {
-    background-color: #222; /* Cor de fundo do corpo do accordion */
-    color: #ddd; /* Cor do texto dentro do accordion */
+:global(.accordion-body) {
+    background-color: #151313 !important;
+    color: #ffc107 !important;
 }
+
 
 /* Adicionando rolagem ao corpo do modal */
 .modal-body {

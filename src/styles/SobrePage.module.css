@@ -1,0 +1,129 @@
+/* Estilo geral da página */
+.container {
+    background-color: #151313;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Título da página */
+.pageTitle {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Estilo do breadcrumb */
+.breadcrumb {
+    background-color: #151313;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo do alerta de informação */
+.alertInfo {
+    background-color: #151313;
+    border-color: #ffc107;
+    color: #ffc107;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Estilo do header do accordion */
+.accordionHeader {
+    background-color: #151313;
+    color: #ffc107;
+    font-weight: bold;
+    border: 1px solid #151313;
+    border-radius: 5px;
+    padding: 10px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo do header do accordion (hover) */
+.accordionHeader:hover {
+    background-color: #222
+}
+
+/* Estilo do body do accordion */
+.accordionBody {
+    background-color: #222; /* Alterado para fundo mais escuro para contraste */
+    color: #ffc107; /* Cor do texto em amarelo */
+    padding: 20px;
+    border-top: 1px solid #222;
+    font-size: 1.1rem; /* Ajuste no tamanho da fonte */
+}
+
+
+
+/* ⬇️ Override global do Accordion Button do Bootstrap */
+:global(.accordion-button) {
+    background-color: #151313 !important;
+    color: #ffc107 !important;
+    border: 1px solid #151313 !important;
+    font-weight: bold;
+    box-shadow: none !important;
+  }
+  
+  :global(.accordion-button:not(.collapsed)),
+  :global(.accordion-button:hover) {
+    background-color: #2b2626 !important;
+    color: #ffc107 !important;
+  }
+  
+
+/* Estilo da seção de contato */
+.contactSection {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #ffc107;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Título da seção de contato */
+.contactSection h4 {
+    font-size: 1.75rem;
+    color: #151313;
+    margin-bottom: 20px;
+}
+
+/* Parágrafos da seção de contato */
+.contactSection p {
+    font-size: 1.1rem;
+    color: #151313;
+    margin-bottom: 10px;
+}
+
+/* Estilo da linha de separação */
+hr {
+    border: 1px solid #ddd;
+}
+
+/* Estilo da animação de fade-in para a página */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    .pageTitle {
+        font-size: 1.75rem;
+    }
+}

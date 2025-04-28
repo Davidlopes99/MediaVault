@@ -4,25 +4,25 @@
   padding: 20px;
 }
 
-.title {
+.page-title {
   color: white;
   font-size: 4rem;
   margin-bottom: 30px;
 }
 
-.pageButton {
+.pagination-button {
   background-color: #f8c100; /* amarelo */
   color: #000000; /* preto */
   border: 2px solid #000000; 
 }
 
-.pageButton:hover {
+.pagination-button:hover {
   background-color: #000000; /* preto */
   color: #f8c100; /* amarelo */
   border: 2px solid #f8c100;
 }
 
-.pageButton:disabled {
+.pagination-button:disabled {
   background-color: #999;
   color: white;
   cursor: not-allowed;

@@ -304,7 +304,11 @@ const SeriesPage: React.FC = () => {
                 <Button
                   variant="primary"
                   disabled={page === totalPages}
-                  onClick={() => setPage((p) => p + 1)}
+                  onClick={() => {
+                    setPage((p) => p + 1);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  
                   className={`${styles["pagination-button"]} ${styles["next"]}`}
                 >
                   Próxima Página
