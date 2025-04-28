@@ -1,101 +1,270 @@
-/* src/components/SeriesCard.module.css */
-
-.cardWrapper {
-  display: flex;
-  flex-direction: column;
-  height: 600px; /* Altura fixa para os dois cards */
-  border: 1px solid #000000;
+.seriesCard {
+  position: relative;
+  background-color: #1f1f1f;
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Imagem do card - Ajustes para manter a proporção e alinhamento */
-.cardImg {
-  object-fit: cover;    /* Mantém a proporção e cobre a área */
-  height: 310px;         /* Altura da imagem igual a do MovieCard */
-  width: 100%;           /* Garante que a imagem ocupe toda a largura do card */
-  border-bottom: 1px solid #000000;
+.seriesCard.hovered {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
-/* Corpo do card */
-.cardBody {
-  flex: 1 1 auto;
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  height: 0;
+  padding-bottom: 150%; /* 2:3 aspect ratio */
+}
+
+.cardImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.seriesCard.hovered .cardImage {
+  transform: scale(1.05);
+}
+
+.fallbackImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  color: #999;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transition: all 0.3s ease;
   overflow: hidden;
-  padding: 1rem;
-  background-color: #3b3636; /* Cor de fundo escura, igual ao MovieCard */
 }
 
-/* Título do card */
-.cardTitle {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #ffffff; /* Cor branca */
+.overlay.visible {
+  opacity: 1;
+  height: 100%;
 }
 
-/* Descrição do card */
-.cardText {
+.overlayContent {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.3s ease 0.1s;
+}
+
+.overlay.visible .overlayContent {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.overlayTitle {
+  color: #FFC107;
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.overlayDescription {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
-  line-clamp: 5;
   overflow: hidden;
-  color: #f8f8f8;
 }
 
-/* Rodapé do card */
-.cardFooter {
+.detailsButton {
+  background-color: #FFC107;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.detailsButton:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+.ratingBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.seasonsBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  z-index: 2;
+  background-color: #6c757d;
+  color: white;
+}
+
+.ratingIcon {
+  margin-right: 2px;
+}
+
+.seasonsIcon {
+  margin-right: 2px;
+}
+
+.ratingHigh {
+  background-color: #28a745;
+  color: white;
+}
+
+.ratingMedium {
+  background-color: #ffc107;
+  color: black;
+}
+
+.ratingLow {
+  background-color: #dc3545;
+  color: white;
+}
+
+.ratingNA {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cardBody {
+  padding: 15px;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  background-color: #292930;
-  border-top: 1px solid #000000;
-  height: 95px; /* Altura fixa para o footer */
 }
 
-/* Número de temporadas */
-.seasons {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #f8f8f8;
-  margin-bottom: 0.5rem;
+.cardTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2.8rem;
 }
 
-/* Ações: botão e avaliação */
-.actions {
+.cardMeta {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  color: #aaa;
+  font-size: 0.85rem;
+}
+
+.releaseDate {
+  display: flex;
   align-items: center;
+  gap: 4px;
 }
 
-/* Botão de detalhes */
-.detailButton {
-  background-color: #615c49; /* Cor do botão */
-  border: none;
-  color: white;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.detailButton:hover {
-  background-color: rgb(125, 119, 97); /* Cor ao passar o mouse */
-}
-
-/* Badge de avaliação */
-.ratingBadge {
-  background-color: #ffc107; /* Amarelo para a avaliação */
-  color: #212529;
-  padding: 0.5rem 0.8rem;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 1rem;
-  display: inline-flex;
+.seasons {
+  display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 4px;
+}
+
+.calendarIcon {
+  opacity: 0.7;
+}
+
+.tvIcon {
+  opacity: 0.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .overlayTitle {
+    font-size: 1.2rem;
+  }
+  
+  .overlayDescription {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 4;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardTitle {
+    font-size: 1rem;
+  }
+  
+  .cardMeta {
+    font-size: 0.8rem;
+  }
+  
+  .detailsButton {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .overlayTitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .overlayDescription {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    -webkit-line-clamp: 3;
+  }
+  
+  .detailsButton {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
 }

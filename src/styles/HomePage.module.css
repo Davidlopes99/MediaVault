@@ -1,8 +1,44 @@
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   background-color: #151313;
-  padding: 20px;
+  padding: 30px;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(255, 193, 7, 0.3);
+  position: relative;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 100px;
+  height: 4px;
+  background-color: #FFC107;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.mainTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #FFC107;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #e0e0e0;
+  font-size: 1.2rem;
+  max-width: 80%;
+  margin: 0 auto;
 }
 
 .sectionTitle {
@@ -12,136 +48,104 @@
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   margin-bottom: 1.5rem;
   padding-left: 15px;
-}
-
-.movieCarousel, .tvShowCarousel {
   position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding: 0 100px;
 }
 
-.carouselControlPrev, .carouselControlNext {
+.sectionTitle::before {
+  content: '';
   position: absolute;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 2rem;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: #DAA520;
+  width: 6px;
+  height: 70%;
+  background-color: #FFC107;
+  border-radius: 3px;
+}
+
+.contentTabs {
+  margin-bottom: 2rem;
+}
+
+.contentTabs :global(.nav-tabs) {
+  border-bottom: 2px solid #FFC107;
+  margin-bottom: 2rem;
+}
+
+.contentTabs :global(.nav-link) {
+  color: #e0e0e0;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
   border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
+  background: transparent;
+  transition: all 0.3s ease;
 }
 
-.carouselControlPrev {
-  left: 0;
+.contentTabs :global(.nav-link:hover) {
+  color: #FFC107;
+  background-color: rgba(255, 193, 7, 0.1);
 }
 
-.carouselControlNext {
-  right: 0;
-}
-
-.carouselControlPrev:hover,
-.carouselControlNext:hover {
-  background-color: rgba(255, 215, 0, 0.9);
-  color: #000000;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.movieCardCol > .card,
-.tvShowCardCol > .card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background-color: #1f1f1f;
-  color: white;
+.contentTabs :global(.nav-link.active) {
+  color: #151313;
+  background-color: #FFC107;
   border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.movieCardCol > .card:hover,
-.tvShowCardCol > .card:hover {
-  transform: translateY(-5px);
-}
-
-.movieCardCol > .card .card-body,
-.tvShowCardCol > .card .card-body {
-  flex: 1 1 auto;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: 15px;
-}
-
-.movieCardCol > .card .card-body .card-text,
-.tvShowCardCol > .card .card-body .card-text {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #d1d1d1;
-}
-
-.movieCardCol > .card .card-img-top,
-.tvShowCardCol > .card .card-img-top {
-  height: 400px;
-  object-fit: cover;
+  border-radius: 4px 4px 0 0;
 }
 
 /* Responsividade */
 @media (max-width: 1200px) {
-  .movieCarousel, .tvShowCarousel {
-    padding: 0 80px;
+  .container {
+    padding: 25px;
   }
   
-  .carouselControlPrev, .carouselControlNext {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+  .mainTitle {
+    font-size: 2.5rem;
+  }
+  
+  .subtitle {
+    max-width: 90%;
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 992px) {
-  .sectionTitle {
-    font-size: 1.8rem;
+  .mainTitle {
+    font-size: 2.2rem;
   }
   
-  .movieCardCol > .card .card-img-top,
-  .tvShowCardCol > .card .card-img-top {
-    height: 350px;
+  .sectionTitle {
+    font-size: 1.8rem;
   }
 }
 
 @media (max-width: 768px) {
-  .movieCarousel, .tvShowCarousel {
-    padding: 0 60px;
+  .container {
+    padding: 20px;
+  }
+  
+  .header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+  }
+  
+  .mainTitle {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    max-width: 100%;
   }
   
   .sectionTitle {
     font-size: 1.6rem;
-    padding-left: 10px;
+    padding-left: 12px;
   }
   
-  .carouselControlPrev, .carouselControlNext {
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
-  }
-  
-  .movieCardCol > .card .card-img-top,
-  .tvShowCardCol > .card .card-img-top {
-    height: 300px;
+  .contentTabs :global(.nav-link) {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -150,22 +154,29 @@
     padding: 15px;
   }
   
+  .header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .mainTitle {
+    font-size: 1.8rem;
+  }
+  
+  .subtitle {
+    font-size: 0.9rem;
+  }
+  
   .sectionTitle {
     font-size: 1.4rem;
+    padding-left: 10px;
   }
   
-  .movieCarousel, .tvShowCarousel {
-    padding: 0 40px;
+  .sectionTitle::before {
+    width: 4px;
   }
   
-  .carouselControlPrev, .carouselControlNext {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-  
-  .movieCardCol > .card .card-img-top,
-  .tvShowCardCol > .card .card-img-top {
-    height: 250px;
+  .contentTabs :global(.nav-link) {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
   }
 }

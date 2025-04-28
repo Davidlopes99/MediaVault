@@ -1,89 +1,239 @@
-/* src/components/MovieCard.module.css */
-
-body {
-  background-color: #151313; /* Cor de fundo da página */
-  margin: 0;
-  padding: 0;
-  min-height: 100vh; /* Garante que ocupe 100% da altura da tela */
-  font-family: Arial, sans-serif;
-}
-
-/* Container do card ocupa 100% da altura da coluna */
-.cardWrapper {
-  display: flex;
-  flex-direction: column;
-  height: 600px; /* Altura fixa para todos os cards */
-  border: 1px solid #000000;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-/* Corpo do card que cresce, mas esconde overflow */
-.cardBody {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: 1rem; /* se seu MovieCard usar padding interno */
-  background-color: #3b3636;
-}
-
-/* Título */
-.cardTitle {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #ffffff;
-}
-
-/* Sinopse truncada depois de 5 linhas */
-/* Truncamento multilinha compatível */
-.cardText {
-  display: -webkit-box;        /* exibe como caixa flexível WebKit */
-  -webkit-box-orient: vertical;/* define a orientação da caixa para vertical */
-  -webkit-line-clamp: 5;       /* número de linhas antes de truncar (prefixo WebKit) */
-  line-clamp: 5;               /* sintaxe padrão CSS Overflow Module Level 4 */
-  overflow: hidden;            /* esconde o conteúdo extra */
-  color: #f8f8f8;
-}
-
-
-/* Footer (botão + rating) ficarem no fim */
-.cardFooter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  border: 1px solid #000000;
-  background-color: #292930;
-}
-
-/* Botão de detalhes */
-.detailButton {
-  background-color: #615c49; /* Azul Bootstrap */
+.movieCard {
+  position: relative;
+  background-color: #1f1f1f;
   border: none;
-  color: white;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  border-radius: 5px;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.detailButton:hover {
-  background-color: rgb(125, 119, 97); /* Azul mais escuro no hover */
+.movieCard.hovered {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
-/* Badge de nota */
-.ratingBadge {
-  background-color: #ffc107; /* Amarelo Bootstrap */
-  color: #212529;
-  padding: 0.5rem 0.8rem;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 1rem;
-  display: inline-flex;
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  height: 0;
+  padding-bottom: 150%; /* 2:3 aspect ratio */
+}
+
+.cardImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.movieCard.hovered .cardImage {
+  transform: scale(1.05);
+}
+
+.fallbackImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #333;
+  color: #999;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.overlay.visible {
+  opacity: 1;
+  height: 100%;
+}
+
+.overlayContent {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.3s ease 0.1s;
+}
+
+.overlay.visible .overlayContent {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.overlayTitle {
+  color: #FFC107;
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.overlayDescription {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
+
+.detailsButton {
+  background-color: #FFC107;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.detailsButton:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+.ratingBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.ratingIcon {
+  margin-right: 2px;
+}
+
+.ratingHigh {
+  background-color: #28a745;
+  color: white;
+}
+
+.ratingMedium {
+  background-color: #ffc107;
+  color: black;
+}
+
+.ratingLow {
+  background-color: #dc3545;
+  color: white;
+}
+
+.ratingNA {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cardBody {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2.8rem;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  color: #aaa;
+  font-size: 0.85rem;
+}
+
+.releaseDate {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.calendarIcon {
+  opacity: 0.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .overlayTitle {
+    font-size: 1.2rem;
+  }
+  
+  .overlayDescription {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 4;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardTitle {
+    font-size: 1rem;
+  }
+  
+  .cardMeta {
+    font-size: 0.8rem;
+  }
+  
+  .detailsButton {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .overlayTitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .overlayDescription {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    -webkit-line-clamp: 3;
+  }
+  
+  .detailsButton {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
 }

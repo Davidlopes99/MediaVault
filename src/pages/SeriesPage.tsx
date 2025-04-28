@@ -94,18 +94,15 @@ const SeriesPage: React.FC = () => {
           ) : (
             <>
               <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-                {series.map((s) => (
+              {series.map((s) => (
                   <Col key={s.id}>
                     <SeriesCard
-                      title={s.name}
-                      imageUrl={`https://image.tmdb.org/t/p/w500${s.poster_path}`}
-                      description={s.overview}
-                      seasons={s.number_of_seasons}
-                      rating={s.vote_average}
+                      series={s}
                       onClick={() => handleSeriesClick(s)}
                     />
                   </Col>
                 ))}
+
               </Row>
 
               <div className="d-flex justify-content-between align-items-center mt-4">
