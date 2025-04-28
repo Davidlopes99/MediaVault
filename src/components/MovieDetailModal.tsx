@@ -50,6 +50,16 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, movie, onHide
             <p>
               <strong>Avaliação média:</strong> {movie?.vote_average.toFixed(1)} ★
             </p>
+            
+            {/* Adicionando a seção de Streamings */}
+            {movie?.streamingPlatforms && movie.streamingPlatforms.length > 0 ? (
+              <p>
+                <strong>Disponível em:</strong>{" "}
+                {movie.streamingPlatforms.join(", ")}
+              </p>
+            ) : (
+              <p><strong>Não disponível em plataformas de streaming.</strong></p>
+            )}
           </Col>
         </Row>
       </Modal.Body>

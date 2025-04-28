@@ -7,6 +7,7 @@ export type Movie = {
     vote_average: number;
     release_date: string;
     genres?: { id: number; name: string }[];
+    streamingPlatforms?: string[];
   };
   
   export type TVShow = {

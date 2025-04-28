@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Accordion, Alert, Breadcrumb } from 'react-bootstrap';
+import { Accordion, Alert } from 'react-bootstrap';
 import styles from '../styles/SobrePage.module.css'; // Importando o módulo CSS
 
 export default function SobrePage() {

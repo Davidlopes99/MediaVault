@@ -140,20 +140,35 @@ const FilmesPage: React.FC = () => {
     selectedCountry,
   ]);
 
+  // Função para buscar detalhes do filme
+  const fetchDetails = async (id: number) => {
+    try {
+      const res = await fetch(
+        `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR`
+      );
+      const details = await res.json();
+      const streamingRes = await fetch(
+        `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${API_KEY}&language=pt-BR`
+      );
+      const streamingData = await streamingRes.json();
+
+      const streamingPlatforms = streamingData.results?.BR?.flatrate?.map(
+        (provider: Provider) => provider.provider_name
+      );
+
+      setSelectedMovie({
+        ...details,
+        streamingPlatforms: streamingPlatforms || [],
+      });
+    } catch (err) {
+      console.error("Erro ao buscar detalhes do filme:", err);
+    }
+  };
+
+  // Função chamada quando o usuário clica em um cartão de filme
   const handleCardClick = (id: number) => {
     setSelectedMovie(null); // Reseta o filme selecionado para mostrar o loading.
-    const fetchDetails = async () => {
-      try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR`
-        );
-        const details = await res.json();
-        setSelectedMovie(details);
-      } catch (err) {
-        console.error("Erro ao buscar detalhes do filme:", err);
-      }
-    };
-    fetchDetails();
+    fetchDetails(id); // Chama a função fetchDetails para obter o filme e plataformas
   };
 
   const handleClose = () => setSelectedMovie(null);
@@ -225,17 +240,15 @@ const FilmesPage: React.FC = () => {
                 ))}
               </Row>
               <div className="d-flex justify-content-between align-items-center mt-4">
-              <Button
-                className={styles.pageButton}
-                disabled={page === 1}
-                onClick={() => {
-                  setPage((p) => p - 1);
-                  
-                }}
-              >
-                Página Anterior
-              </Button>
-
+                <Button
+                  className={styles.pageButton}
+                  disabled={page === 1}
+                  onClick={() => {
+                    setPage((p) => p - 1);
+                  }}
+                >
+                  Página Anterior
+                </Button>
                 <span>
                   Página {page} de {totalPages}
                 </span>
@@ -249,7 +262,6 @@ const FilmesPage: React.FC = () => {
                 >
                   Próxima Página
                 </Button>
-
               </div>
             </>
           )}
