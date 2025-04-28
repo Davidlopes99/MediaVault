@@ -1,105 +1,314 @@
 /* Estilo geral da página */
 .container {
     background-color: #151313;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    color: #f5f5f5;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Título da página */
+/* Seção Hero */
+.heroSection {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 0;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.heroSection::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ffc107, transparent);
+}
+
+/* Título principal da página */
 .pageTitle {
     color: #ffffff;
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: bold;
-    margin-bottom: 30px;
-}
-
-/* Estilo do breadcrumb */
-.breadcrumb {
-    background-color: #151313;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilo do alerta de informação */
-.alertInfo {
-    background-color: #151313;
-    border-color: #ffc107;
-    color: #ffc107;
-    border-radius: 5px;
     margin-bottom: 20px;
+    text-shadow: 0 2px 10px rgba(255, 193, 7, 0.3);
+    position: relative;
+    display: inline-block;
+}
+
+.pageTitle::after {
+    content: '';
+    position: absolute;
+    width: 40%;
+    height: 3px;
+    background-color: #ffc107;
+    bottom: -10px;
+    left: 30%;
+}
+
+.heroSubtitle {
+    color: #cccccc;
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Estilo da seção sobre */
+.aboutColumn {
+    padding-right: 30px;
+}
+
+.sectionHeading {
+    margin-bottom: 20px;
+    border-left: 5px solid #ffc107;
+    padding-left: 15px;
+}
+
+.sectionHeading h3 {
+    color: #ffc107;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.aboutText {
+    color: #e0e0e0;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+/* Estilo do card de features */
+.featureCard {
+    background-color: #1d1d1d;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featureCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.featureTitle {
+    color: #ffc107;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+    padding-bottom: 10px;
+}
+
+.featureList {
+    list-style-type: none;
+    padding-left: 5px;
+}
+
+.featureList li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 15px;
+    color: #e0e0e0;
+    font-size: 1.05rem;
+}
+
+.featureList li::before {
+    content: "➤";
+    position: absolute;
+    left: 0;
+    color: #ffc107;
+}
+
+/* Seção de tecnologias */
+.techSection {
+    margin: 50px 0;
+    padding: 30px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sectionTitle {
+    color: #ffffff;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.sectionTitle::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 3px;
+    background-color: #ffc107;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.techCard {
+    background-color: #1d1d1d;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    height: 100%;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.techCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.techIcon {
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.techCard:hover .techIcon {
+    transform: scale(1.1);
+}
+
+.techName {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+/* Seção de FAQ */
+.faqSection {
+    margin: 50px 0;
 }
 
 /* Estilo do header do accordion */
 .accordionHeader {
-    background-color: #151313;
+    background-color: #1d1d1d;
     color: #ffc107;
-    font-weight: bold;
-    border: 1px solid #151313;
-    border-radius: 5px;
-    padding: 10px;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 5px;
+    transition: all 0.3s ease;
 }
 
-/* Estilo do header do accordion (hover) */
 .accordionHeader:hover {
-    background-color: #222
+    background-color: #222;
 }
 
 /* Estilo do body do accordion */
 .accordionBody {
-    background-color: #222; /* Alterado para fundo mais escuro para contraste */
-    color: #ffc107; /* Cor do texto em amarelo */
+    background-color: #222;
+    color: #e0e0e0;
     padding: 20px;
     border-top: 1px solid #222;
-    font-size: 1.1rem; /* Ajuste no tamanho da fonte */
+    font-size: 1.05rem;
+    line-height: 1.7;
 }
-
-
 
 /* ⬇️ Override global do Accordion Button do Bootstrap */
 :global(.accordion-button) {
-    background-color: #151313 !important;
+    background-color: #1d1d1d !important;
     color: #ffc107 !important;
-    border: 1px solid #151313 !important;
-    font-weight: bold;
+    border: 1px solid #1d1d1d !important;
+    font-weight: 600;
     box-shadow: none !important;
-  }
+    padding: 15px 20px;
+}
   
-  :global(.accordion-button:not(.collapsed)),
-  :global(.accordion-button:hover) {
+:global(.accordion-button:not(.collapsed)),
+:global(.accordion-button:hover) {
     background-color: #2b2626 !important;
     color: #ffc107 !important;
-  }
-  
+}
+
+:global(.accordion-item) {
+    border: none;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+:global(.accordion-button::after) {
+    background-color: #ffc107;
+    border-radius: 50%;
+}
+
+/* Estilo do alerta de informação */
+.alertInfo {
+    background-color: rgba(21, 19, 19, 0.8);
+    border: 1px solid #ffc107;
+    color: #ffc107;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(5px);
+}
+
+:global(.alert-heading) {
+    color: #ffc107;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
 
 /* Estilo da seção de contato */
 .contactSection {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #ffc107;
-    border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+    padding: 30px;
+    background: linear-gradient(145deg, #ffc107, #ff9800);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 /* Título da seção de contato */
 .contactSection h4 {
     font-size: 1.75rem;
     color: #151313;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 /* Parágrafos da seção de contato */
 .contactSection p {
     font-size: 1.1rem;
     color: #151313;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-weight: 500;
 }
 
-/* Estilo da linha de separação */
-hr {
-    border: 1px solid #ddd;
+.contactButton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #151313;
+    color: #ffc107;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.contactButton:hover {
+    background-color: #000;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    color: #ffc107;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #999;
+    font-size: 0.9rem;
 }
 
 /* Estilo da animação de fade-in para a página */
@@ -114,16 +323,54 @@ hr {
     }
 }
 
-.container {
-    animation: fadeIn 0.4s ease-in-out;
+.fadeIn {
+    animation: fadeIn 0.6s ease-in-out;
 }
 
 /* Ajuste para telas menores */
+@media (max-width: 992px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .pageTitle {
+        font-size: 2.5rem;
+    }
+    
+    .aboutColumn {
+        padding-right: 15px;
+        margin-bottom: 30px;
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 15px;
     }
+    
+    .pageTitle {
+        font-size: 2rem;
+    }
+    
+    .heroSubtitle {
+        font-size: 1.1rem;
+    }
+    
+    .contactSection {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .techSection .col-6 {
+        width: 50%;
+    }
+    
     .pageTitle {
         font-size: 1.75rem;
+    }
+    
+    .sectionTitle {
+        font-size: 1.5rem;
     }
 }

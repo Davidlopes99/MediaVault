@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Modal, Row, Col, Accordion } from "react-bootstrap";
-import { TVShow, Episode } from "C:/Users/david/Documents/GitHub/MediaVault/src/types"; // Defina seus tipos em um arquivo separado
+import { Series, Episode } from "C:/Users/david/Documents/GitHub/MediaVault/src/types"; // Defina seus tipos em um arquivo separado
 import styles from "./SeriesDetailModal.module.css"; // Importe o CSS do modal
 
 type TVShowDetailModalProps = {
   show: boolean;
-  tvShow: TVShow | null;
+  tvShow: Series | null;
   onHide: () => void;
   fetchEpisodes: (seasonNumber: number, tvShowId: number) => void;
   episodesBySeason: Record<number, Episode[]>;

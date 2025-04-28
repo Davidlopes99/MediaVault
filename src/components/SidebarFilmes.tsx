@@ -67,9 +67,13 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
 
   return (
     <Form className={`${styles.sidebar} mb-4`}>
+      <h4 className="mb-4 text-center" style={{ color: '#ffc107', fontWeight: 700, letterSpacing: '1px' }}>
+        FILTROS DE BUSCA
+      </h4>
+      
       {/* Ordenar por */}
       <Form.Group controlId="sortSelect" className={styles.section}>
-        <Form.Label className={styles.label}>Ordenar por:</Form.Label>
+        <Form.Label className={styles.label}>Ordenar por</Form.Label>
         <Form.Select
           value={localSortBy}
           onChange={e => setLocalSortBy(e.target.value)}
@@ -86,10 +90,22 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
         </Form.Select>
       </Form.Group>
 
+      {/* Busca por nome */}
+      <Form.Group controlId="searchInput" className={styles.section}>
+        <Form.Label className={styles.label}>Buscar por nome</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Ex: Vingadores, Star Wars..."
+          value={localSearchTerm}
+          onChange={e => setLocalSearchTerm(e.target.value)}
+          className={styles.input}
+        />
+      </Form.Group>
+
       {/* Gêneros */}
       <div className={styles.section}>
-        <Form.Label className={styles.label}>Gêneros:</Form.Label>
-        <div>
+        <Form.Label className={styles.label}>Gêneros</Form.Label>
+        <div className="d-flex flex-wrap">
           {genres.map(g => (
             <Button
               key={g.id}
@@ -106,10 +122,27 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
         </div>
       </div>
 
+      {/* Onde assistir */}
+      <Form.Group controlId="providerSelect" className={styles.section}>
+        <Form.Label className={styles.label}>Onde assistir</Form.Label>
+        <Form.Select
+          value={localSelectedProvider}
+          onChange={e => setLocalSelectedProvider(e.target.value)}
+          className={styles.select}
+        >
+          <option value="">Todos os serviços</option>
+          {providers.map(p => (
+            <option key={p.provider_id} value={p.provider_id}>
+              {p.provider_name}
+            </option>
+          ))}
+        </Form.Select>
+      </Form.Group>
+
       {/* Classificação Etária */}
       <div className={styles.section}>
-        <Form.Label className={styles.label}>Classificação:</Form.Label>
-        <div>
+        <Form.Label className={styles.label}>Classificação etária</Form.Label>
+        <div className="d-flex flex-wrap">
           {classifications.map(c => (
             <Button
               key={c}
@@ -124,32 +157,15 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
         </div>
       </div>
 
-      {/* Onde assistir */}
-      <Form.Group controlId="providerSelect" className={styles.section}>
-        <Form.Label className={styles.label}>Onde assistir:</Form.Label>
-        <Form.Select
-          value={localSelectedProvider}
-          onChange={e => setLocalSelectedProvider(e.target.value)}
-          className={styles.select}
-        >
-          <option value="">Todos</option>
-          {providers.map(p => (
-            <option key={p.provider_id} value={p.provider_id}>
-              {p.provider_name}
-            </option>
-          ))}
-        </Form.Select>
-      </Form.Group>
-
       {/* País de produção */}
       <Form.Group controlId="countrySelect" className={styles.section}>
-        <Form.Label className={styles.label}>País de produção:</Form.Label>
+        <Form.Label className={styles.label}>País de produção</Form.Label>
         <Form.Select
           value={localSelectedCountry}
           onChange={e => setLocalSelectedCountry(e.target.value)}
           className={styles.select}
         >
-          <option value="">Todos</option>
+          <option value="">Todos os países</option>
           {countries.map(c => (
             <option key={c.iso_3166_1} value={c.iso_3166_1}>
               {c.english_name}
@@ -158,42 +174,46 @@ const SidebarFilmes: React.FC<SidebarFilmesProps> = ({
         </Form.Select>
       </Form.Group>
 
-      {/* Busca por nome */}
-      <Form.Group controlId="searchInput" className={styles.section}>
-        <Form.Label className={styles.label}>Buscar por nome:</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Exemplo: Vingadores"
-          value={localSearchTerm}
-          onChange={e => setLocalSearchTerm(e.target.value)}
-          className={styles.input}
-        />
-      </Form.Group>
-
       {/* Filtro de nota */}
       <div className={styles.section}>
-        <Form.Label className={styles.sliderLabel}>
-          Pontuação: {localMinRating} – {localMaxRating}
-        </Form.Label>
-        <div className="px-2">
-          <Slider
-            range
-            min={0}
-            max={10}
-            step={0.5}
-            allowCross={false}
-            value={[localMinRating, localMaxRating]}
-            onChange={handleRangeChange}
-            marks={{ 0: '0', 5: '5', 10: '10' }}
-            className={styles.slider}
-          />
+        <div className={styles.sliderLabel}>
+          <span>Pontuação</span>
+          <span className={styles.sliderValue}>{localMinRating} – {localMaxRating}</span>
         </div>
+        <div className="px-2">
+        <Slider
+          range
+          min={0}  // Valor mínimo selecionável permanece 0
+          max={10}
+          step={0.5}
+          allowCross={false}
+          value={[localMinRating, localMaxRating]}
+          onChange={handleRangeChange}
+          marks={{
+            '-0.5': {
+              style: {
+                color: '#fff',  // Cor do texto
+                marginTop: '10px',  // Ajuste de posição
+                left: '0%',  // Posição extrema esquerda
+                transform: 'translateX(-50%)'  // Centraliza o marcador
+              },
+            },
+            
+            1.5: '2', 
+            3.5: '4', 
+            5.5: '6', 
+            7.5: '8', 
+            
+          }}
+          className={styles.slider}
+        />
+      </div>
       </div>
 
       {/* Botão Filtrar */}
-      <div className="d-grid">
+      <div className="d-grid mt-4">
         <Button variant="primary" onClick={applyFilters} className={styles.filterButton}>
-          Filtrar
+          Aplicar Filtros
         </Button>
       </div>
     </Form>

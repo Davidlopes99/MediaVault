@@ -2,6 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   background-color: #151313;
+  padding: 20px;
 }
 
 .sectionTitle {
@@ -9,13 +10,16 @@
   font-weight: bold;
   color: #ffffff;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1.5rem;
+  padding-left: 15px;
 }
 
 .movieCarousel, .tvShowCarousel {
   position: relative;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 2rem;
+  padding: 0 100px;
 }
 
 .carouselControlPrev, .carouselControlNext {
@@ -30,51 +34,138 @@
   cursor: pointer;
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
 
 .carouselControlPrev {
-  left: -100px;
+  left: 0;
 }
 
 .carouselControlNext {
-  right: -100px;
+  right: 0;
 }
 
-.carouselControlPrev, .carouselControlNext {
-  font-size: 25px;
-  padding: 5px 10px;
-  width: 80px;
-  height: 80px;
+.carouselControlPrev:hover,
+.carouselControlNext:hover {
+  background-color: rgba(255, 215, 0, 0.9);
+  color: #000000;
+  transition: background-color 0.3s, color 0.3s;
 }
-
 
 .movieCardCol > .card,
 .tvShowCardCol > .card {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: #1f1f1f;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.movieCardCol > .card:hover,
+.tvShowCardCol > .card:hover {
+  transform: translateY(-5px);
 }
 
 .movieCardCol > .card .card-body,
 .tvShowCardCol > .card .card-body {
   flex: 1 1 auto;
-  overflow: hidden; 
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  padding: 15px;
 }
 
-/* Truncar a sinopse após 5 linhas com “…” */
 .movieCardCol > .card .card-body .card-text,
 .tvShowCardCol > .card .card-body .card-text {
   display: -webkit-box;
-  -webkit-box-orient: vertical; 
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #d1d1d1;
 }
 
-.carouselControlPrev:hover,
-.carouselControlNext:hover {
-  background-color: rgba(255, 215, 0, 0.9); /* fundo muda para um dourado claro */
-  color: #000000; /* a seta muda para preto */
-  transition: background-color 0.3s, color 0.3s; /* animação suave */
+.movieCardCol > .card .card-img-top,
+.tvShowCardCol > .card .card-img-top {
+  height: 400px;
+  object-fit: cover;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .movieCarousel, .tvShowCarousel {
+    padding: 0 80px;
+  }
+  
+  .carouselControlPrev, .carouselControlNext {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .sectionTitle {
+    font-size: 1.8rem;
+  }
+  
+  .movieCardCol > .card .card-img-top,
+  .tvShowCardCol > .card .card-img-top {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .movieCarousel, .tvShowCarousel {
+    padding: 0 60px;
+  }
+  
+  .sectionTitle {
+    font-size: 1.6rem;
+    padding-left: 10px;
+  }
+  
+  .carouselControlPrev, .carouselControlNext {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+  
+  .movieCardCol > .card .card-img-top,
+  .tvShowCardCol > .card .card-img-top {
+    height: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .sectionTitle {
+    font-size: 1.4rem;
+  }
+  
+  .movieCarousel, .tvShowCarousel {
+    padding: 0 40px;
+  }
+  
+  .carouselControlPrev, .carouselControlNext {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .movieCardCol > .card .card-img-top,
+  .tvShowCardCol > .card .card-img-top {
+    height: 250px;
+  }
 }

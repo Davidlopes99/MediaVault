@@ -1,0 +1,100 @@
+/* Estilos para os carrosséis */
+.movieCarousel,
+.tvShowCarousel {
+  position: relative;
+  padding: 0 40px;
+  margin-bottom: 20px;
+}
+
+/* Título das seções */
+.sectionTitle {
+  color: #FFC107;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  position: relative;
+  padding-left: 15px;
+}
+
+.sectionTitle::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 70%;
+  background-color: #FFC107;
+  border-radius: 3px;
+}
+
+/* Colunas para cards */
+.movieCardCol, 
+.tvShowCardCol {
+  transition: transform 0.3s ease;
+}
+
+.movieCardCol:hover, 
+.tvShowCardCol:hover {
+  transform: translateY(-10px);
+}
+
+/* Botões de navegação do carrossel */
+.carouselControlPrev,
+.carouselControlNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(21, 19, 19, 0.7);
+  border: 2px solid #FFC107;
+  color: #FFC107;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  padding: 0;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.carouselControlPrev {
+  left: -5px;
+}
+
+.carouselControlNext {
+  right: -5px;
+}
+
+.carouselControlPrev:hover:not(:disabled),
+.carouselControlNext:hover:not(:disabled) {
+  background-color: #FFC107;
+  color: #151313;
+}
+
+.carouselControlPrev:disabled,
+.carouselControlNext:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .movieCarousel,
+  .tvShowCarousel {
+    padding: 0 30px;
+  }
+  
+  .carouselControlPrev,
+  .carouselControlNext {
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+}

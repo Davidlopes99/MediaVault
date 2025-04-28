@@ -2,179 +2,248 @@
 
 /* Estilo geral da sidebar */
 .sidebar {
+  padding: 24px;
+  background: linear-gradient(145deg, #1d1b17 0%, #262522 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 193, 7, 0.1);
+}
+
+/* Espaçamento entre seções */
+.section {
+  margin-bottom: 28px;
+  position: relative;
+}
+
+/* Título de cada seção */
+.label {
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: block;
+  color: #ffc107;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Botões de gênero e classificação */
+.buttonOutline,
+.buttonSelected {
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+  margin-bottom: 10px;
+  color: white;
+  background-color: rgba(97, 92, 73, 0.5);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  font-weight: 500;
+}
+
+/* Botão selecionado (ativo) */
+.buttonSelected {
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  color: rgb(0, 0, 0);
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.4);
+  transform: translateY(-1px);
+  border: none;
+  font-weight: 600;
+}
+
+/* Hover correto nos botões que ainda não foram selecionados */
+.buttonOutline:hover {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  border-color: #ffc107;
+  transform: translateY(-1px);
+}
+
+/* Estilo para o slider de nota */
+.slider {
+  margin-top: 16px;
+  padding: 0 12px;
+}
+
+/* Estilo para o label do slider */
+.sliderLabel {
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.sliderValue {
+  color: #ffc107;
+  font-weight: 700;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+/* Input de busca */
+.input {
+  border-radius: 50px;
+  padding: 10px 16px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Botão principal Filtrar */
+.filterButton {
+  border-radius: 50px;
+  padding: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  color: #000000;
+  border: none;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  margin-top: 18px; 
+}
+
+.filterButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 193, 7, 0.4);
+  background: linear-gradient(135deg, #ffd34e 0%, #ffb74d 100%);
+}
+
+.filterButton:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+}
+
+/* Estilo dos dropdowns (selects) */
+.select {
+  border-radius: 50px;
+  padding: 10px 16px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23ffc107' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 16px) center;
+  padding-right: 36px;
+}
+
+/* Estilo quando passa o mouse no select */
+.select:hover {
+  border-color: #ffc107;
+}
+
+/* Estilo quando o select está focado (clicado) */
+.select:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.select option {
+  background-color: #252420;
+  color: white;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sidebar {
     padding: 20px;
-    background-color: #1d1b17;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  /* Espaçamento entre seções */
-  .section {
-    margin-bottom: 24px;
-  }
-  
-  /* Título de cada seção */
-  .label {
-    font-weight: bold;
-    margin-bottom: 8px;
-    display: inline-block;
-    color: #ffffff;
-  }
-  
-  /* Botões de gênero e classificação */
   .buttonOutline,
   .buttonSelected {
-    border-radius: 50px;
-    padding: 6px 14px;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    color: white;
-    background-color: #615c49;
+    padding: 6px 12px;
+    font-size: 0.85rem;
   }
-  
-  /* Botão selecionado (ativo) */
-  .buttonSelected {
-    background-color: #ffc107;
-    color: rgb(0, 0, 0);
-  }
-  
-  /* Hover correto nos botões que ainda não foram selecionados */
-  .buttonOutline:hover {
-    background-color: #ffc107;
-    color: rgb(0, 0, 0);
-  }
-  
-  /* Estilo para o slider de nota */
-  .slider {
-    margin-top: 12px;
-  }
-  
-  /* Estilo para o label do slider */
-  .sliderLabel {
-    font-weight: bold;
-    margin-bottom: 8px;
-    display: inline-block;
-    color: #ffffff;
-    font-size: 1rem;
-  }
-  
-  /* Input de busca */
-  .input {
-    border-radius: 20px;
-  }
-  
-  /* Botão principal Filtrar */
-  .filterButton {
-    border-radius: 20px;
-    padding: 10px;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #DAA520;
-    border-color: rgba(0, 0, 0, 0.7);
-  }
+}
 
-  .filterButton:hover {
-    background-color: #ffc107;
-    color: rgb(0, 0, 0);
-  }
-  
-  /* Seções de select */
-  .select {
-    border-radius: 20px;
-  }
-  
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .sidebar {
-      padding: 15px;
-    }
-  }
-  
-  /* Estilo dos dropdowns (selects) */
-.select {
-    border-radius: 20px;
-    padding: 8px 12px;
-    background-color: rgba(0, 0, 0, 0.7); /* Fundo preto semitransparente */
-    color: #DAA520; /* Dourado no texto */
-    border: 1px solid #DAA520;
-    font-weight: bold;
-    transition: all 0.3s ease;
-  }
-  
-  /* Estilo quando passa o mouse no select */
-  .select:hover {
-    background-color: #ffc107; /* Amarelo de destaque */
-    color: black;
-  }
-  
-  /* Estilo quando o select está focado (clicado) */
-  .select:focus {
-    background-color: #ffc107;
-    color: black;
-    border-color: black;
-    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
-  }
-  
-  /* Estilos globais do rc-slider */
+/* Estilos globais do rc-slider */
 :global(.rc-slider-rail) {
-    height: 8px;
-    background-color: #615c49; /* Cor da trilha não selecionada */
-    border-radius: 4px;
+  height: 8px;
+  background-color: rgba(97, 92, 73, 0.5);
+  
 }
 
 :global(.rc-slider-track) {
-    height: 8px;
-    background-color: #ffc107; /* Amarelo na trilha selecionada */
-    border-radius: 4px;
+  height: 8px;
+  background: linear-gradient(90deg, #ffc107 0%, #ff9800 100%);
+ 
 }
 
 :global(.rc-slider-handle) {
-    width: 20px;
-    height: 20px;
-    margin-top: -6px; /* Para centralizar verticalmente */
-    background-color: #ffffff; /* Amarelo */
-    border: 2px solid black;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: border 0.3s, background-color 0.3s;
+  width: 22px;
+  height: 22px;
+  margin-top: -7px;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+  
+  
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 :global(.rc-slider-handle:hover) {
-    background-color: #ffea00; /* Amarelo mais claro no hover */
-    border-color: black;
+  border-color: #ff9800;
+  box-shadow: 0 0 0 5px rgba(255, 193, 7, 0.2);
+  transform: scale(1.1);
+}
+
+:global(.rc-slider-handle:active) {
+  box-shadow: 0 0 0 5px rgba(255, 193, 7, 0.3);
 }
 
 :global(.rc-slider-mark) {
-    color: rgb(247, 5, 5);
-    font-size: 0.8rem;
+  margin-top: 10px;
 }
 
 :global(.rc-slider-mark-text) {
-    color: #ffffff;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 :global(.rc-slider-mark-text-active) {
-    color: #ffc107; /* Amarelo para o texto ativo */
-    
+  color: #ffc107;
+  font-weight: 600;
 }
 
 /* Cor dos pontos de marcação não selecionados (padrão) */
 :global(.rc-slider-dot) {
-    background-color: #ffffff; /* Cor do ponto quando não está ativo */
-    border-color: #ffffff; /* Borda do ponto */
+  width: 10px;
+  height: 10px;
+  bottom: -4px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  
 }
 
 /* Cor dos pontos de marcação ao passar o mouse */
 :global(.rc-slider-dot:hover) {
-    background-color: #ffc107; /* Cor do ponto ao passar o mouse */
-    border-color: #ffffff; /* Borda do ponto ao passar o mouse */
+  background-color: #ffffff;
 }
 
 /* Cor do ponto ativo (entre os dois handles) */
 :global(.rc-slider-dot-active) {
-    background-color: #ffc107; /* Cor do ponto ativo */
-    border-color: #000000; /* Borda do ponto ativo */
+  background-color: #ffc107;
+  border-color: #ffc107;
+  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.3);
 }

@@ -1,182 +1,147 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Spinner, Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Row, Col, Spinner, Button, Badge, Container } from "react-bootstrap";
 import MovieCard from "../components/MovieCard";
 import Sidebar from "../components/SidebarFilmes";
 import styles from "../styles/FilmesPage.module.css";
 import MovieDetailModal from "../components/MovieDetailModal";
-
-// Definições de tipos
-type Movie = {
-  id: number;
-  title: string;
-  overview: string;
-  poster_path: string;
-  vote_average: number;
-  release_date: string;
-  genres: { id: number; name: string }[];
-};
-
-type Provider = { provider_id: number; provider_name: string };
-type Genre = { id: number; name: string };
-type Country = { iso_3166_1: string; english_name: string };
+import { useMovies } from "../hooks/useMovies";
+import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const FilmesPage: React.FC = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [totalPages, setTotalPages] = useState(1);
-
-  // Estados de filtro
-  const [sortBy, setSortBy] = useState("popularity.desc");
-  const [genres, setGenres] = useState<Genre[]>([]);
-  const [selectedGenre, setSelectedGenre] = useState("");
-  const [providers, setProviders] = useState<Provider[]>([]);
-  const [selectedProvider, setSelectedProvider] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [classification, setClassification] = useState("");
-  const [minRating, setMinRating] = useState(0);
-  const [maxRating, setMaxRating] = useState(10);
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState("");
-
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-
-  // Busca gêneros, provedores e países na montagem
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=pt-BR`
-        );
-        const data = await res.json();
-        setGenres(data.genres);
-      } catch (err) {
-        console.error("Erro ao buscar gêneros:", err);
-      }
-    };
-
-    const fetchProviders = async () => {
-      try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/watch/providers/movie?api_key=${API_KEY}&language=pt-BR&watch_region=BR`
-        );
-        const data = await res.json();
-        setProviders(data.results || []);
-      } catch (err) {
-        console.error("Erro ao buscar provedores:", err);
-      }
-    };
-
-    const fetchCountries = async () => {
-      try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/configuration/countries?api_key=${API_KEY}`
-        );
-        const data = await res.json();
-        setCountries(data);
-      } catch (err) {
-        console.error("Erro ao buscar países:", err);
-      }
-    };
-
-    fetchGenres();
-    fetchProviders();
-    fetchCountries();
-  }, []);
-
-  // Busca filmes sempre que filtros ou página mudam
-  useEffect(() => {
-    const fetchMovies = async () => {
-      setLoading(true);
-      const base = searchTerm
-        ? "https://api.themoviedb.org/3/search/movie"
-        : "https://api.themoviedb.org/3/discover/movie";
-
-      const params = new URLSearchParams({
-        api_key: API_KEY,
-        language: "pt-BR",
-        page: page.toString(),
-        "vote_average.gte": minRating.toString(),
-        "vote_average.lte": maxRating.toString(),
-      });
-
-      if (selectedGenre) params.append("with_genres", selectedGenre);
-      if (selectedProvider) {
-        params.append("with_watch_providers", selectedProvider);
-        params.append("watch_region", "BR");
-      }
-      if (classification) {
-        params.append("certification_country", "BR");
-        params.append("certification", classification);
-      }
-      if (selectedCountry)
-        params.append("with_origin_country", selectedCountry);
-      if (searchTerm) params.append("query", searchTerm);
-      if (!searchTerm && sortBy) params.append("sort_by", sortBy);
-
-      try {
-        const res = await fetch(`${base}?${params.toString()}`);
-        const data = await res.json();
-        setMovies(data.results);
-        setTotalPages(data.total_pages);
-      } catch (err) {
-        console.error("Erro ao buscar filmes:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMovies();
-  }, [
+  const {
+    movies,
     page,
-    sortBy,
+    loading,
+    totalPages,
+    selectedMovie,
+    genres,
     selectedGenre,
+    providers,
     selectedProvider,
-    classification,
+    countries,
+    selectedCountry,
+    sortBy,
     searchTerm,
+    classification,
     minRating,
     maxRating,
-    selectedCountry,
-  ]);
+    setPage,
+    setSortBy,
+    setSelectedGenre,
+    setSelectedProvider,
+    setSearchTerm,
+    setClassification,
+    setMinRating,
+    setMaxRating,
+    setSelectedCountry,
+    handleCardClick,
+    handleCloseModal,
+  } = useMovies();
 
-  // Função para buscar detalhes do filme
-  const fetchDetails = async (id: number) => {
-    try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR`
-      );
-      const details = await res.json();
-      const streamingRes = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${API_KEY}&language=pt-BR`
-      );
-      const streamingData = await streamingRes.json();
+  // Novos estados para funcionalidades adicionais
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [releaseYear, setReleaseYear] = useState<number | null>(null);
+  const [onlyWithTrailer, setOnlyWithTrailer] = useState(false);
+  const [favoriteMovies, setFavoriteMovies] = useState<number[]>([]);
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
 
-      const streamingPlatforms = streamingData.results?.BR?.flatrate?.map(
-        (provider: Provider) => provider.provider_name
-      );
+  // Filmes em destaque (hardcoded para exemplo)
+  const featuredMovies = movies.slice(0, 3).map(movie => ({
+    ...movie,
+    isFeatured: true
+  }));
 
-      setSelectedMovie({
-        ...details,
-        streamingPlatforms: streamingPlatforms || [],
-      });
-    } catch (err) {
-      console.error("Erro ao buscar detalhes do filme:", err);
-    }
+  // Estatísticas
+  const stats = {
+    totalMovies: movies.length > 0 ? totalPages * 20 : 0,
+    averageRating: movies.length > 0 ? (movies.reduce((sum, movie) => sum + movie.vote_average, 0) / movies.length).toFixed(1) : 0,
+    topGenre: selectedGenre || "Todos"
   };
 
-  // Função chamada quando o usuário clica em um cartão de filme
-  const handleCardClick = (id: number) => {
-    setSelectedMovie(null); // Reseta o filme selecionado para mostrar o loading.
-    fetchDetails(id); // Chama a função fetchDetails para obter o filme e plataformas
+  // Toggle favorito
+  const toggleFavorite = (movieId: number) => {
+    setFavoriteMovies(prev => 
+      prev.includes(movieId) 
+        ? prev.filter(id => id !== movieId)
+        : [...prev, movieId]
+    );
   };
 
-  const handleClose = () => setSelectedMovie(null);
+  // Filtrar filmes baseado em novos filtros
+  const filteredMovies = movies.filter(movie => {
+    if (showOnlyFavorites && !favoriteMovies.includes(movie.id)) return false;
+    if (releaseYear && movie.release_date?.split('-')[0] !== releaseYear.toString()) return false;
+    if (onlyWithTrailer && !movie.video) return false;
+    return true;
+  });
 
   return (
-    <div className={`container mt-4 ${styles.container}`}>
-      <h1 className={styles.title}>Filmes</h1>
-      <Row>
+    <Container fluid className={styles.container}>
+      {/* Banner de destaque */}
+      <div className={styles.banner}>
+        <div className={styles.bannerContent}>
+          <h1 className={styles.title}>Descubra Novos Filmes</h1>
+          <p className={styles.subtitle}>
+            Explore nossa coleção de filmes de diferentes gêneros, países e plataformas.
+          </p>
+        </div>
+      </div>
+
+      {/* Breadcrumbs */}
+      <div className={styles.breadcrumbs}>
+        <span>Home</span> &gt; <span className={styles.activeBreadcrumb}>Filmes</span>
+      </div>
+
+      {/* Estatísticas rápidas */}
+      <div className={styles.statsBar}>
+        <div className={styles.statItem}>
+          <span className={styles.statValue}>{stats.totalMovies}</span>
+          <span className={styles.statLabel}>Filmes disponíveis</span>
+        </div>
+        <div className={styles.statItem}>
+          <span className={styles.statValue}>{stats.averageRating}</span>
+          <span className={styles.statLabel}>Nota média</span>
+        </div>
+        <div className={styles.statItem}>
+          <span className={styles.statValue}>{stats.topGenre}</span>
+          <span className={styles.statLabel}>Gênero selecionado</span>
+        </div>
+      </div>
+
+      {/* Filmes em destaque */}
+      {featuredMovies.length > 0 && !showOnlyFavorites && (
+        <div className={styles.featuredSection}>
+          <h2 className={styles.sectionTitle}>Em Destaque</h2>
+          <Row className="g-4">
+            {featuredMovies.map((movie) => (
+              <Col key={`featured-${movie.id}`} md={4}>
+                <div className={styles.featuredCard}>
+                  <img 
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                    alt={movie.title}
+                    className={styles.featuredPoster}
+                  />
+                  <div className={styles.featuredContent}>
+                    <h3>{movie.title}</h3>
+                    <div className={styles.featuredRating}>
+                      <FaStar /> {movie.vote_average.toFixed(1)}
+                    </div>
+                    <Button 
+                      variant="warning" 
+                      className={styles.featuredButton}
+                      onClick={() => handleCardClick(movie.id)}
+                    >
+                      Ver Detalhes
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </div>
+      )}
+
+      <Row className="mt-4">
         <Col md={3}>
           <Sidebar
             sortBy={sortBy}
@@ -216,42 +181,196 @@ const FilmesPage: React.FC = () => {
               setSelectedCountry(value);
               setPage(1);
             }}
+            // Novos filtros adicionados
+            releaseYear={releaseYear}
+            setReleaseYear={(value) => {
+              setReleaseYear(value);
+              setPage(1);
+            }}
+            onlyWithTrailer={onlyWithTrailer}
+            setOnlyWithTrailer={(value) => {
+              setOnlyWithTrailer(value);
+              setPage(1);
+            }}
+            showOnlyFavorites={showOnlyFavorites}
+            setShowOnlyFavorites={(value) => {
+              setShowOnlyFavorites(value);
+              setPage(1);
+            }}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
           />
         </Col>
         <Col md={9}>
+          {/* Topo da lista com total e seletores */}
+          <div className={styles.resultsHeader}>
+            <span className={styles.resultCount}>
+              Mostrando {filteredMovies.length} filme(s)
+            </span>
+            <div className={styles.viewToggle}>
+              <Button 
+                variant={viewMode === 'grid' ? 'warning' : 'outline-warning'} 
+                onClick={() => setViewMode('grid')}
+                className={styles.viewButton}
+              >
+                Grid
+              </Button>
+              <Button 
+                variant={viewMode === 'list' ? 'warning' : 'outline-warning'}
+                onClick={() => setViewMode('list')}
+                className={styles.viewButton}
+              >
+                Lista
+              </Button>
+            </div>
+          </div>
+
           {loading ? (
-            <div className="text-center my-5">
-              <Spinner animation="border" role="status" />
+            <div className={styles.loadingContainer}>
+              <Spinner animation="border" className={styles.spinner} />
               <p>Carregando filmes...</p>
+            </div>
+          ) : filteredMovies.length === 0 ? (
+            <div className={styles.noResults}>
+              <h3>Nenhum filme encontrado</h3>
+              <p>Tente mudar os filtros de busca</p>
             </div>
           ) : (
             <>
-              <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-                {movies.map((m) => (
-                  <Col key={m.id}>
-                    <MovieCard
-                      title={m.title}
-                      imageUrl={`https://image.tmdb.org/t/p/w500${m.poster_path}`}
-                      description={m.overview}
-                      rating={m.vote_average}
-                      onClick={() => handleCardClick(m.id)}
-                    />
-                  </Col>
-                ))}
-              </Row>
-              <div className="d-flex justify-content-between align-items-center mt-4">
+              {viewMode === 'grid' ? (
+                <Row xs={1} sm={2} md={3} lg={3} className="g-4">
+                  {filteredMovies.map((movie) => (
+                    <Col key={movie.id}>
+                      <div className={styles.movieCardWrapper}>
+                        <MovieCard
+                          title={movie.title}
+                          imageUrl={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                          description={movie.overview}
+                          rating={movie.vote_average}
+                          onClick={() => handleCardClick(movie.id)}
+                          isFavorite={favoriteMovies.includes(movie.id)}
+                          onToggleFavorite={() => toggleFavorite(movie.id)}
+                          releaseYear={movie.release_date?.split('-')[0]}
+                          genres={movie.genre_ids?.map(id => 
+                            genres.find(g => g.id === id)?.name
+                          ).filter(Boolean).slice(0, 2)}
+                        />
+                      </div>
+                    </Col>
+                  ))}
+                </Row>
+              ) : (
+                <div className={styles.listView}>
+                  {filteredMovies.map((movie) => (
+                    <div key={movie.id} className={styles.listItem}>
+                      <div className={styles.listPoster}>
+                        <img 
+                          src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} 
+                          alt={movie.title} 
+                        />
+                      </div>
+                      <div className={styles.listContent}>
+                        <h3>{movie.title} <span className={styles.year}>({movie.release_date?.split('-')[0]})</span></h3>
+                        <div className={styles.listMeta}>
+                          <span className={styles.rating}>
+                            <FaStar /> {movie.vote_average.toFixed(1)}
+                          </span>
+                          {movie.genre_ids?.map(id => {
+                            const genre = genres.find(g => g.id === id)?.name;
+                            return genre ? (
+                              <Badge key={id} className={styles.genreBadge}>{genre}</Badge>
+                            ) : null;
+                          }).filter(Boolean).slice(0, 3)}
+                        </div>
+                        <p className={styles.listOverview}>
+                          {movie.overview?.substring(0, 150)}
+                          {movie.overview?.length > 150 ? '...' : ''}
+                        </p>
+                        <div className={styles.listActions}>
+                          <Button 
+                            variant="warning" 
+                            size="sm"
+                            onClick={() => handleCardClick(movie.id)}
+                          >
+                            Ver Detalhes
+                          </Button>
+                          <Button 
+                            variant={favoriteMovies.includes(movie.id) ? "danger" : "outline-danger"}
+                            size="sm"
+                            onClick={() => toggleFavorite(movie.id)}
+                          >
+                            {favoriteMovies.includes(movie.id) ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Paginação aprimorada */}
+              <div className={styles.pagination}>
                 <Button
                   className={styles.pageButton}
                   disabled={page === 1}
-                  onClick={() => {
-                    setPage((p) => p - 1);
-                  }}
+                  onClick={() => setPage((p) => p - 1)}
                 >
-                  Página Anterior
+                  <FaChevronLeft /> Anterior
                 </Button>
-                <span>
-                  Página {page} de {totalPages}
-                </span>
+                
+                <div className={styles.pageInfo}>
+                  {page > 2 && (
+                    <Button 
+                      variant="link" 
+                      className={styles.pageLink}
+                      onClick={() => setPage(1)}
+                    >
+                      1
+                    </Button>
+                  )}
+                  
+                  {page > 3 && <span className={styles.pageDots}>...</span>}
+                  
+                  {page > 1 && (
+                    <Button 
+                      variant="link" 
+                      className={styles.pageLink}
+                      onClick={() => setPage(page - 1)}
+                    >
+                      {page - 1}
+                    </Button>
+                  )}
+                  
+                  <Button 
+                    variant="warning" 
+                    className={styles.currentPage}
+                  >
+                    {page}
+                  </Button>
+                  
+                  {page < totalPages && (
+                    <Button 
+                      variant="link" 
+                      className={styles.pageLink}
+                      onClick={() => setPage(page + 1)}
+                    >
+                      {page + 1}
+                    </Button>
+                  )}
+                  
+                  {page < totalPages - 2 && <span className={styles.pageDots}>...</span>}
+                  
+                  {page < totalPages - 1 && (
+                    <Button 
+                      variant="link" 
+                      className={styles.pageLink}
+                      onClick={() => setPage(totalPages)}
+                    >
+                      {totalPages}
+                    </Button>
+                  )}
+                </div>
+                
                 <Button
                   className={styles.pageButton}
                   disabled={page === totalPages}
@@ -260,7 +379,7 @@ const FilmesPage: React.FC = () => {
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                 >
-                  Próxima Página
+                  Próxima <FaChevronRight />
                 </Button>
               </div>
             </>
@@ -268,13 +387,23 @@ const FilmesPage: React.FC = () => {
         </Col>
       </Row>
 
-      {/* Novo Modal usando o MovieDetailModal */}
+      {/* Modal com melhorias */}
       <MovieDetailModal
         show={!!selectedMovie}
         movie={selectedMovie}
-        onHide={handleClose}
+        onHide={handleCloseModal}
+        isFavorite={selectedMovie ? favoriteMovies.includes(selectedMovie.id) : false}
+        onToggleFavorite={() => selectedMovie && toggleFavorite(selectedMovie.id)}
       />
-    </div>
+
+      {/* Botão de voltar ao topo */}
+      <Button 
+        className={styles.backToTop}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
+        ↑
+      </Button>
+    </Container>
   );
 };
 

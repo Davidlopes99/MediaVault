@@ -1,34 +1,78 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
-
+import styles from '../styles/Layout.module.css';
 
 export default function Layout() {
+  const location = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const closeMenu = () => setMenuOpen(false);
+
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <div className="d-flex flex-column min-vh-100">
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-        <Link className="navbar-brand" to="/">MediaVault</Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/">Início</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/filmes">Filmes</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/series">Séries</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/sobre">Sobre</Link>
-            </li>
-          </ul>
+      <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
+        <div className={styles.navContainer}>
+          <Link className={styles.navbarBrand} to="/">
+            <span className={styles.brandIcon}>📺</span>
+            <span className={styles.brandText}>MediaVault</span>
+          </Link>
+          
+          <button 
+            className={`${styles.navbarToggler} ${menuOpen ? styles.open : ''}`} 
+            type="button" 
+            onClick={toggleMenu}
+            aria-label="Toggle navigation"
+          >
+            <span className={styles.togglerIcon}></span>
+            <span className={styles.togglerIcon}></span>
+            <span className={styles.togglerIcon}></span>
+          </button>
+          
+          <div className={`${styles.navbarCollapse} ${menuOpen ? styles.show : ''}`}>
+            <ul className={styles.navbarNav}>
+              {[
+                { name: 'Início', path: '/' },
+                { name: 'Filmes', path: '/filmes' },
+                { name: 'Séries', path: '/series' },
+                { name: 'Sobre', path: '/sobre' }
+              ].map((item, index) => (
+                <li className={styles.navItem} key={index}>
+                  <Link 
+                    className={`${styles.navLink} ${isActive(item.path) ? styles.active : ''}`} 
+                    to={item.path}
+                    onClick={closeMenu}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+              <li className={styles.navItem}>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
 
-      <main className="container flex-grow-1 mt-4">
+      <main className="container-fluid flex-grow-1 px-0">
         <Outlet />
       </main>
 
