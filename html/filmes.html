@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filmes</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container-fluid {
+      max-width: 1400px;
+      margin: 0 auto;
+      background-color: #151313;
+      padding: 30px;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid rgba(255, 193, 7, 0.3);
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -2px;
+      width: 100px;
+      height: 4px;
+      background-color: #FFC107;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .main-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #FFC107;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: #e0e0e0;
+      font-size: 1.2rem;
+      max-width: 80%;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      margin-bottom: 1.5rem;
+      padding-left: 15px;
+      position: relative;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 70%;
+      background-color: #FFC107;
+      border-radius: 3px;
+    }
+
+    .info-card {
+      background-color: #1e1e1e;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+    }
+
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .movie-icon {
+      font-size: 4rem;
+      color: #FFC107;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+    }
+
+    .coming-soon {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .feature-item {
+      background-color: rgba(255, 193, 7, 0.05);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #FFC107;
+      text-align: left;
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+      background-color: rgba(255, 193, 7, 0.1);
+      transform: translateX(5px);
+    }
+
+    .feature-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFC107;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 1200px) {
+      .container-fluid {
+        padding: 25px;
+      }
+      
+      .main-title {
+        font-size: 2.5rem;
+      }
+      
+      .subtitle {
+        max-width: 90%;
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .main-title {
+        font-size: 2.2rem;
+      }
+      
+      .section-title {
+        font-size: 1.6rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container-fluid {
+        padding: 20px;
+      }
+      
+      .header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+      }
+      
+      .main-title {
+        font-size: 2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+        max-width: 100%;
+      }
+      
+      .section-title {
+        font-size: 1.4rem;
+        padding-left: 12px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container-fluid {
+        padding: 15px;
+      }
+      
+      .header {
+        margin-bottom: 1.5rem;
+      }
+      
+      .main-title {
+        font-size: 1.8rem;
+      }
+      
+      .subtitle {
+        font-size: 0.9rem;
+      }
+      
+      .section-title {
+        font-size: 1.3rem;
+        padding-left: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">MediaVault</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="home.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="filmes.html">Filmes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="series.html">Séries</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="sobre.html">Sobre</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <header class="header">
+    <h1 class="main-title">Filmes</h1>
+    <p class="subtitle">Descubra os melhores lançamentos e clássicos do cinema mundial em uma experiência visual única</p>
+  </header>
+
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <section class="mb-5">
+        <div class="info-card">
+          <i class="fas fa-film movie-icon"></i>
+          <h2 class="coming-soon">Em breve</h2>
+          <p class="lead">Estamos preparando um incrível catálogo de filmes para você. Nossa equipe está trabalhando para trazer uma experiência cinematográfica excepcional diretamente para a sua tela.</p>
+        </div>
+      </section>
+
+      <section class="mb-5">
+        <h2 class="section-title">O que você vai encontrar</h2>
+        <div class="feature-item">
+          <h3 class="feature-title"><i class="fas fa-fire-alt me-2"></i>Lançamentos Imperdíveis</h3>
+          <p>Mantenha-se atualizado com os filmes mais recentes de Hollywood e do mundo todo, com informações detalhadas e trailers exclusivos.</p>
+        </div>
+        <div class="feature-item">
+          <h3 class="feature-title"><i class="fas fa-star me-2"></i>Clássicos Atemporais</h3>
+          <p>Redescubra obras-primas do cinema que marcaram gerações, com análises profundas e curiosidades fascinantes.</p>
+        </div>
+        <div class="feature-item">
+          <h3 class="feature-title"><i class="fas fa-list me-2"></i>Categorias Diversas</h3>
+          <p>Navegue por gêneros como ação, drama, comédia, terror, animação e muito mais, com recomendações personalizadas.</p>
+        </div>
+        <div class="feature-item">
+          <h3 class="feature-title"><i class="fas fa-thumbs-up me-2"></i>Avaliações da Comunidade</h3>
+          <p>Veja o que outros cinéfilos estão achando dos filmes e compartilhe suas próprias opiniões em nossa comunidade.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Rodapé -->
+<footer class="bg-dark text-light py-4 mt-5">
+  <div class="container text-center text-md-start">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <h5 class="text-uppercase">MediaVault</h5>
+        <p>Seu portal de filmes e séries para todas as horas. Atualizado com os melhores lançamentos da TMDB.</p>
+      </div>
+      <div class="col-md-3 mb-3">
+        <h6 class="text-uppercase">Links</h6>
+        <ul class="list-unstyled">
+          <li><a href="home.html" class="text-decoration-none text-light">Home</a></li>
+          <li><a href="filmes.html" class="text-decoration-none text-light">Filmes</a></li>
+          <li><a href="series.html" class="text-decoration-none text-light">Séries</a></li>
+          <li><a href="sobre.html" class="text-decoration-none text-light">Sobre</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 mb-3">
+        <h6 class="text-uppercase">Siga-nos</h6>
+        <a href="#" class="text-light me-2"><i class="fas fa-facebook-f"></i></a>
+        <a href="#" class="text-light me-2"><i class="fas fa-instagram"></i></a>
+        <a href="#" class="text-light"><i class="fas fa-twitter"></i></a>
+      </div>
+    </div>
+    <hr class="border-light">
+    <div class="text-center">
+      <p class="mb-0">&copy; 2025 MediaVault. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap 5 JS e Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

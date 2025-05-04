@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediaVault - Seu guia para filmes e séries em streaming</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container-fluid {
+      max-width: 1400px;
+      margin: 0 auto;
+      background-color: #151313;
+      padding: 30px;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid rgba(255, 193, 7, 0.3);
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -2px;
+      width: 100px;
+      height: 4px;
+      background-color: #FFC107;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .main-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #FFC107;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: #e0e0e0;
+      font-size: 1.2rem;
+      max-width: 80%;
+      margin: 0 auto;
+    }
+
+    .nav-tabs {
+      border-bottom: 2px solid #FFC107;
+      margin-bottom: 2rem;
+    }
+
+    .nav-link {
+      color: #e0e0e0;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: #FFC107;
+      background-color: rgba(255, 193, 7, 0.1);
+    }
+
+    .nav-link.active {
+      color: #151313 !important;
+      background-color: #FFC107 !important;
+      border: none;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      margin-bottom: 1.5rem;
+      padding-left: 15px;
+      position: relative;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 70%;
+      background-color: #FFC107;
+      border-radius: 3px;
+    }
+
+    .movie-card {
+      background-color: #1e1e1e;
+      border: none;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .movie-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .image-container {
+      position: relative;
+      overflow: hidden;
+      padding-top: 150%; /* Aspect ratio 2:3 for movie posters */
+    }
+
+    .card-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .fallback-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #2d2d2d;
+      color: #888;
+      font-weight: 500;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.3) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .image-container:hover .overlay {
+      opacity: 1;
+    }
+
+    .overlay-title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .overlay-description {
+      font-size: 0.85rem;
+      color: #ddd;
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .details-button {
+      background-color: #FFC107;
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .details-button:hover {
+      background-color: #e0a800;
+    }
+
+    .rating-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      z-index: 5;
+    }
+
+    .rating-high {
+      background-color: #28a745;
+      color: #fff;
+    }
+
+    .rating-medium {
+      background-color: #ffc107;
+      color: #000;
+    }
+
+    .rating-low {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .release-date {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .carousel-section {
+      margin-bottom: 3rem;
+    }
+
+    .carousel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .item-counter {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .current-items {
+      color: #FFC107;
+      font-weight: 600;
+    }
+
+    .carousel-content {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 193, 7, 0.8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      color: #000;
+      font-weight: bold;
+      border: none;
+    }
+
+    .carousel-control-disabled {
+      background-color: rgba(255, 193, 7, 0.3);
+      cursor: not-allowed;
+    }
+
+    .carousel-control-prev {
+      left: -20px;
+    }
+
+    .carousel-control-next {
+      right: -20px;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1rem;
+    }
+
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: rgba(255, 193, 7, 0.3);
+      border: none;
+      padding: 0;
+      transition: background-color 0.3s ease;
+    }
+
+    .carousel-dot.active {
+      background-color: #FFC107;
+    }
+
+    /* Responsividade */
+    @media (max-width: 1200px) {
+      .container-fluid {
+        padding: 25px;
+      }
+      
+      .main-title {
+        font-size: 2.5rem;
+      }
+      
+      .subtitle {
+        max-width: 90%;
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .main-title {
+        font-size: 2.2rem;
+      }
+      
+      .section-title {
+        font-size: 1.6rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container-fluid {
+        padding: 20px;
+      }
+      
+      .header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+      }
+      
+      .main-title {
+        font-size: 2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+        max-width: 100%;
+      }
+      
+      .section-title {
+        font-size: 1.4rem;
+        padding-left: 12px;
+      }
+      
+      .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container-fluid {
+        padding: 15px;
+      }
+      
+      .header {
+        margin-bottom: 1.5rem;
+      }
+      
+      .main-title {
+        font-size: 1.8rem;
+      }
+      
+      .subtitle {
+        font-size: 0.9rem;
+      }
+      
+      .section-title {
+        font-size: 1.3rem;
+        padding-left: 10px;
+      }
+      
+      .nav-link {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+      <a class="navbar-brand" href="#">MediaVault</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="home.html">Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="filmes.html">Filmes</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="series.html">Séries</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="sobre.html">Sobre</a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</nav>
+
+  <div class="container-fluid">
+    <header class="header">
+      <h1 class="main-title">MediaVault</h1>
+      <p class="subtitle">Seu guia para filmes e séries em streaming</p>
+    </header>
+
+    <ul class="nav nav-tabs" id="contentTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">Todos</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="movies-tab" data-bs-toggle="tab" data-bs-target="#movies" type="button" role="tab" aria-controls="movies" aria-selected="false">Filmes</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="series-tab" data-bs-toggle="tab" data-bs-target="#series" type="button" role="tab" aria-controls="series" aria-selected="false">Séries</button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="contentTabsContent">
+      <!-- Aba Todos -->
+      <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+        <!-- Filmes Populares -->
+        <section class="carousel-section">
+          <div class="carousel-header">
+            <h2 class="section-title">Filmes Populares</h2>
+            <div class="item-counter">
+              <span class="current-items">1-4</span>
+              <span class="total-items"> de 12</span>
+            </div>
+          </div>
+
+          <div class="position-relative">
+            <button class="carousel-control-prev" type="button">
+              <span aria-hidden="true">&lt;</span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+
+            <div class="row g-4">
+              <!-- Filme 1 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/8LJJjLjAzAwXS40S5mx79PJ2jSs.jpg" alt="Duna: Parte 2" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">Duna: Parte 2</h3>
+                      <p class="overlay-description">Seguindo a jornada de Paul Atreides que se une a Chani e aos Fremen enquanto busca vingança contra os conspiradores que destruíram sua família.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-high">
+                      <i class="fas fa-star"></i> 8.5
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Duna: Parte 2</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> mar. de 2024
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filme 2 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://image.tmdb.org/t/p/w500/7lTnXOy0iNtBAdRP3TZvaKJ77F6.jpg" alt="Aquaman 2: O Reino Perdido" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">Aquaman 2: O Reino Perdido</h3>
+                      <p class="overlay-description">Depois de não conseguir derrotar Aquaman da primeira vez, Arraia Negra está de volta e mais determinado do que nunca a vingar a morte de seu pai.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-medium">
+                      <i class="fas fa-star"></i> 6.9
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Aquaman 2: O Reino Perdido</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> dez. de 2023
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filme 3 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/fWSGD2yrzz6hscocnMD8AEXIThk.jpg" alt="Godzilla e Kong: O Novo Império" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">Godzilla e Kong: O Novo Império</h3>
+                      <p class="overlay-description">Uma nova aventura coloca o todo-poderoso Kong e o temível Godzilla contra uma colossal ameaça desconhecida escondida em nosso mundo.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-medium">
+                      <i class="fas fa-star"></i> 7.1
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Godzilla e Kong: O Novo Império</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> abr. de 2024
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filme 4 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/iOdcXYSVzBgmBJzNIlIMOZ6fz0F.jpg" alt="Pobres Criaturas" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">Pobres Criaturas</h3>
+                      <p class="overlay-description">A incrível história sobre a fantástica evolução de Bella Baxter, uma jovem que é trazida de volta à vida pelo cientista brilhante e não convencional Dr. Godwin Baxter.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-high">
+                      <i class="fas fa-star"></i> 8.0
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Pobres Criaturas</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> jan. de 2024
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="carousel-control-next" type="button">
+              <span aria-hidden="true">&gt;</span>
+              <span class="visually-hidden">Próximo</span>
+            </button>
+          </div>
+
+          <div class="carousel-dots">
+            <button class="carousel-dot active" aria-label="Página 1"></button>
+            <button class="carousel-dot" aria-label="Página 2"></button>
+            <button class="carousel-dot" aria-label="Página 3"></button>
+          </div>
+        </section>
+
+        <!-- Séries Populares -->
+        <section class="carousel-section">
+          <div class="carousel-header">
+            <h2 class="section-title">Séries Populares nos Principais Streamers</h2>
+            <div class="item-counter">
+              <span class="current-items">1-4</span>
+              <span class="total-items"> de 10</span>
+            </div>
+          </div>
+
+          <div class="position-relative">
+            <button class="carousel-control-prev" type="button">
+              <span aria-hidden="true">&lt;</span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+
+            <div class="row g-4">
+              <!-- Série 1 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/xEC4nyJvcWcOu7QaobLcqz6iRUL.jpg" alt="House of the Dragon" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">House of the Dragon</h3>
+                      <p class="overlay-description">200 anos antes dos eventos de Game of Thrones, os Targaryen estavam no auge de seu poder, tendo inúmeros dragões sob seu comando.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-high">
+                      <i class="fas fa-star"></i> 8.4
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">House of the Dragon</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> ago. de 2022
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Série 2 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/1Wtfucko1wQBAN4rJbRnqA6kqQQ.jpg" alt="The Last of Us" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">The Last of Us</h3>
+                      <p class="overlay-description">Vinte anos após a queda da civilização, Joel é contratado para tirar Ellie de uma zona de quarentena perigosa. O que começa como um pequeno trabalho logo se transforma em uma jornada brutal.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-high">
+                      <i class="fas fa-star"></i> 8.7
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">The Last of Us</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> jan. de 2023
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Série 3 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/tQRX6GbYooU7kUaarKf5YXDTONy.jpg" alt="Fallout" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">Fallout</h3>
+                      <p class="overlay-description">Numa adaptação do videogame, moradores de abrigos nucleares no mundo pós-apocalíptico de 2296 tentam sobreviver à superfície contaminada e cheia de perigos.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-high">
+                      <i class="fas fa-star"></i> 8.2
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Fallout</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> abr. de 2024
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Série 4 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/eU1i6eHXlzMOlEq0ku1Rzq7Y4wA.jpg" alt="The Mandalorian" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">The Mandalorian</h3>
+                      <p class="overlay-description">Após a queda do Império, um caçador de recompensas solitário faz seu caminho pelo lado mais selvagem da galáxia, longe da autoridade da Nova República.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-high">
+                      <i class="fas fa-star"></i> 8.5
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">The Mandalorian</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> nov. de 2019
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="carousel-control-next" type="button">
+              <span aria-hidden="true">&gt;</span>
+              <span class="visually-hidden">Próximo</span>
+            </button>
+          </div>
+
+          <div class="carousel-dots">
+            <button class="carousel-dot active" aria-label="Página 1"></button>
+            <button class="carousel-dot" aria-label="Página 2"></button>
+            <button class="carousel-dot" aria-label="Página 3"></button>
+          </div>
+        </section>
+
+        <!-- Filmes Netflix -->
+        <section class="carousel-section">
+          <div class="carousel-header">
+            <h2 class="section-title">Filmes Populares na Netflix</h2>
+            <div class="item-counter">
+              <span class="current-items">1-4</span>
+              <span class="total-items"> de 8</span>
+            </div>
+          </div>
+
+          <div class="position-relative">
+            <button class="carousel-control-prev" type="button">
+              <span aria-hidden="true">&lt;</span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+
+            <div class="row g-4">
+              <!-- Filme Netflix 1 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://pbs.twimg.com/media/FtXIwXnWAAE-hSt?format=jpg&name=900x900" alt="A Mãe" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">A Mãe</h3>
+                      <p class="overlay-description">Uma assassina sai de seu esconderijo para proteger a filha que abandonou anos antes, enquanto foge de homens perigosos.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-medium">
+                      <i class="fas fa-star"></i> 6.8
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">A Mãe</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> mai. de 2023
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filme Netflix 2 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/AfwqKLQwjgPu8bIL1mqhHTlnQv0.jpg" alt="O Resgate 2" class="card-image">
+                                        <div class="overlay">
+                      <h3 class="overlay-title">O Resgate 2</h3>
+                      <p class="overlay-description">Continuando as missões perigosas, Tyler Rake encara novos desafios em uma missão ainda mais mortal para resgatar uma família refém de um criminoso implacável.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-high">
+                      <i class="fas fa-star"></i> 7.5
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">O Resgate 2</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> jun. de 2023
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filme Netflix 3 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/iTGBHdL12QEpLyRVlykDuiYxzAG.jpg" alt="Bird Box Barcelona" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">Bird Box Barcelona</h3>
+                      <p class="overlay-description">Após uma entidade misteriosa dizimar a população mundial, os sobreviventes precisam evitar qualquer contato visual com o fenômeno sobrenatural.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-medium">
+                      <i class="fas fa-star"></i> 6.3
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Bird Box Barcelona</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> jul. de 2023
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filme Netflix 4 -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="movie-card">
+                  <div class="image-container">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/6Sc7Tjt7aPsdghYK32mDMFeZkqJ.jpg" alt="Não Olhe Para Cima" class="card-image">
+                    <div class="overlay">
+                      <h3 class="overlay-title">Não Olhe Para Cima</h3>
+                      <p class="overlay-description">Dois astrônomos medíocres embarcam em uma turnê midiática para alertar a humanidade sobre um cometa que destruirá o planeta Terra.</p>
+                      <button class="details-button">Ver detalhes</button>
+                    </div>
+                    <span class="badge rating-badge rating-medium">
+                      <i class="fas fa-star"></i> 7.2
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Não Olhe Para Cima</h5>
+                    <div class="card-meta">
+                      <span class="release-date">
+                        <i class="fas fa-calendar"></i> dez. de 2021
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="carousel-control-next" type="button">
+              <span aria-hidden="true">&gt;</span>
+              <span class="visually-hidden">Próximo</span>
+            </button>
+          </div>
+
+          <div class="carousel-dots">
+            <button class="carousel-dot active" aria-label="Página 1"></button>
+            <button class="carousel-dot" aria-label="Página 2"></button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-light py-4 mt-5">
+    <div class="container text-center text-md-start">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <h5 class="text-uppercase">MediaVault</h5>
+          <p>Seu portal de filmes e séries para todas as horas. Atualizado com os melhores lançamentos da TMDB.</p>
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6 class="text-uppercase">Links</h6>
+          <ul class="list-unstyled">
+            <li><a href="home.html" class="text-decoration-none text-light">Home</a></li>
+            <li><a href="filmes.html" class="text-decoration-none text-light">Filmes</a></li>
+            <li><a href="series.html" class="text-decoration-none text-light">Séries</a></li>
+            <li><a href="sobre.html" class="text-decoration-none text-light">Sobre</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6 class="text-uppercase">Siga-nos</h6>
+          <a href="#" class="text-light me-2"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="text-light me-2"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="text-light"><i class="bi bi-twitter-x"></i></a>
+        </div>
+      </div>
+      <hr class="border-light">
+      <div class="text-center">
+        <p class="mb-0">&copy; 2025 MediaVault. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+  
+
+  <!-- Bootstrap 5 JS e Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
